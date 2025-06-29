@@ -26,7 +26,7 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.gamepadpressed(joy, button)
-    player.player_controller:set_control_type("controller", joystick)
+    player.player_controller:set_control_type("controller", joy)
 end
 
 function love.joystickadded(j)
