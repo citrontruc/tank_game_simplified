@@ -7,7 +7,8 @@ local movement_threshold = 0.1
 --creation
 function PlayerController:new(control_type, speed)
     local object = {
-        control_type = control_type
+        control_type = control_type,
+        joystick = nil
     }
     setmetatable(object, PlayerController)
     return object
@@ -16,6 +17,7 @@ end
 --setter
 function PlayerController:set_control_type(control_type, joystick)
     self.control_type = control_type
+    self.joystick = joystick
 end
 
 --update
@@ -26,68 +28,49 @@ function PlayerController:update(dt, x, y, angle, size_x, size_y, joystick)
     }
 
     chosen_move_function = move_function[self.control_type]
-    dx, dy, angle = chosen_move_function(self, dt, x, y, angle, joystick)
-    dx, dy = self:check_position(x, y, dx, dy, size_x, size_y)
-    return dx, dy, angle
+    dx1, dy1, dx2, dy2, action = chosen_move_function(self, joystick)
+    return dx1, dy1, dx2, dy2, action
 end
 
 --movement functions
 --movement with keyboard
-function PlayerController:move_with_keyboard(dt, x, y, angle, joystick)
+function PlayerController:move_with_keyboard(joystick)
     local dx = 0
     local dy = 0
-    local move_x = 0
-    local move_y = 0
     if love.keyboard.isDown("down") then
-        dy = self.speed * dt
-        move_y = 1
+        dy = 1
     end
     if love.keyboard.isDown("up") then
-        dy = -self.speed * dt
-        move_y = -1
+        dy = -1
     end
     if love.keyboard.isDown("right") then
-        dx = self.speed * dt
-        move_x = 1
+        dx = 1
     end
     if love.keyboard.isDown("left") then
-        dx = -self.speed * dt
-        move_x = -1
+        dx = -1
     end
-
-    if move_x ~= 0 or move_y ~= 0 then
-        angle = math.atan2(move_y, move_x)
-    end
-    return dx, dy, angle
+    return dx, dy
 end
 
 -- movement with controller
-function PlayerController:move_with_controller(dt, x, y, angle, joystick)
-    local dx = 0
-    local dy = 0
-    local move_x = 0
-    local move_y = 0
-    if not joystick then return x, y, angle end
+function PlayerController:move_with_controller(dt, joystick)
+    local dx1 = 0
+    local dy1 = 0
+    local dx2 = nil
+    local dy2 = nil
+    if not joystick then return 0, 0 end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
-        dy = self.speed * dt
-        move_y = 1
+        dy = 1
     end
     if joystick:isGamepadDown("dpup")then
-        dy = -self.speed * dt
-        move_y = -1
+        dy = -1
     end
     if joystick:isGamepadDown("dpright") then
-        dx = self.speed * dt
-        move_x = 1
+        dx = 1
     end
     if joystick:isGamepadDown("dpleft")then
-        dx = -self.speed * dt
-        move_x = -1
-    end
-
-    if move_x ~= 0 or move_y ~= 0 then
-        angle = math.atan2(move_y, move_x)
+        dx = -1
     end
 
     -- Move with joystick (in which case the left joystick takes care of movement and theright of angle)
@@ -96,13 +79,16 @@ function PlayerController:move_with_controller(dt, x, y, angle, joystick)
     local rx = joystick:getAxis(3)
     local ry = joystick:getAxis(4)
     if math.abs(lx) > movement_threshold then
-        dx = self.speed * dt * lx
+        dx = lx
     end
     if math.abs(ly) > movement_threshold then
-        dy = self.speed * dt * ly
+        dy = ly
     end
-    if math.abs(rx) > movement_threshold or math.abs(ry) >= movement_threshold then
-        angle = math.atan2(ry, rx)
+    if math.abs(rx) > movement_threshold then
+        dx = lx
+    end
+    if math.abs(ly) > movement_threshold then
+        dy = ry
     end
 
     return dx, dy, angle

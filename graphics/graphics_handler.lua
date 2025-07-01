@@ -7,7 +7,8 @@ GraphicsHandler.__index = GraphicsHandler  -- set up proper metatable for OOP
 function PlayerGraphicsHandler:new(image_item, image_displacement_angle)
     local object = {
         image_item = image_item,
-        image_displacement_angle = image_displacement_angle
+        image_displacement_angle = image_displacement_angle,
+        image_orientation
     }
     setmetatable(object, GraphicsHandler)
     return object

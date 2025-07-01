@@ -4,26 +4,10 @@ local Player = {}
 Player.__index = Player
 
 
-function Player:new(initial_x, initial_y, size_x, size_y, initial_angle, player_rotation_speed, initial_image_angle)
+function Player:new(initial_health)
     local player = {
         player_object = true,
         health = initial_health,
-        position = {
-            x = initial_x,
-            y = initial_y
-        },
-        size = {
-            x,
-            y
-        },
-        angle = {
-            current = initial_angle,
-            target = initial_angle,
-        },
-        speed = {
-            movement = speed,
-            rotation = rotation_speed
-        },
         player_entity = nil,
         player_controller = nil
     }
@@ -48,12 +32,13 @@ end
 
 --update functions
 function Player:update(dt)
-    local player_input = self:get_player_input(dt)
-    self.player_entity:update(dt, player_input)
+    local dx1, dy1, dx2, dy2, action = self:get_player_input(dt)
+    self.player_entity:update(dt, dx1, dy1, dx2, dy2, action)
 end
 
 function Player:get_player_input(dt)
-    self.player_controller:update(dt)
+    local dx1, dy1, dx2, dy2, action = self.player_controller:update(dt)
+    return dx1, dy1, dx2, dy2, action
 end
 
 -- draw functions
