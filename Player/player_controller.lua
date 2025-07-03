@@ -2,10 +2,12 @@
 
 local PlayerController = {}
 PlayerController.__index = PlayerController
+
+-- Value to move somewhere else?
 local movement_threshold = 0.1
 
 --creation
-function PlayerController:new(control_type, speed)
+function PlayerController:new(control_type)
     local object = {
         control_type = control_type,
         joystick = nil

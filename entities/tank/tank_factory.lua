@@ -1,9 +1,11 @@
 -- An object to create tanks
 
+--Imports
 local GraphicsHandler = require("graphics.graphics_handler")
 local ImageItem = require("graphics.image_item")
 local Tank = require("entities.tank.tank")
 
+-- Global variables
 local TANK_TYPES = {
     blue = {
         image = ImageItem:new("assets/Topdown Tanks Redux/PNG/Default size/tank_blue.png"),
