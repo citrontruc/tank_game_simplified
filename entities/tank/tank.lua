@@ -15,12 +15,12 @@ function Tank:new(position_x, position_y, size_x, size_y, initial_angle)
         },
         angle = {
             current = initial_angle,
-            target = initial_angle,
+            target = initial_angle
         },
         speed = {
             movement = speed,
             rotation = rotation_speed
-        },
+        }
     }
     setmetatable(tank, Tank)
     return Tank
@@ -38,8 +38,8 @@ function Tank:update_state()
 end
 
 function Tank:check_border_screen()
-    self.position.x = math.min(math.max(self.size.x/2, self.position.x), love.graphics.getWidth() - self.size.x/2)
-    self.position.y = math.min(math.max(self.size.y/2, self.position.y), love.graphics.getHeight() - self.size.y/2)
+    self.position.x = math.min(math.max(self.size.x / 2, self.position.x), love.graphics.getWidth() - self.size.x / 2)
+    self.position.y = math.min(math.max(self.size.y / 2, self.position.y), love.graphics.getHeight() - self.size.y / 2)
 end
 
 function Tank:draw()

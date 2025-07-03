@@ -22,7 +22,7 @@ end
 -- Methods to change control type.
 -- If a controller is pressed, we change to detect controller input
 function love.keypressed(key, scancode, isrepeat)
-   player.player_controller:set_control_type("keyboard")
+    player.player_controller:set_control_type("keyboard")
 end
 
 function love.gamepadpressed(joy, button)
@@ -30,5 +30,5 @@ function love.gamepadpressed(joy, button)
 end
 
 function love.joystickadded(j)
-    joystick = j  -- support hot-plugging controllers
+    joystick = j -- support hot-plugging controllers
 end

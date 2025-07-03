@@ -58,18 +58,20 @@ function PlayerController:move_with_controller(dt, joystick)
     local dy1 = 0
     local dx2 = nil
     local dy2 = nil
-    if not joystick then return 0, 0 end
+    if not joystick then
+        return 0, 0
+    end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
         dy1 = 1
     end
-    if joystick:isGamepadDown("dpup")then
+    if joystick:isGamepadDown("dpup") then
         dy1 = -1
     end
     if joystick:isGamepadDown("dpright") then
         dx1 = 1
     end
-    if joystick:isGamepadDown("dpleft")then
+    if joystick:isGamepadDown("dpleft") then
         dx1 = -1
     end
 
