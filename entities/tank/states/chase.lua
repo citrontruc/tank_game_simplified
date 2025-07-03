@@ -37,7 +37,7 @@ function ChaseState:update(dt, target_position)
     self.position.y = self.position.y + self.speed.movement * math.sin(self.angle.target) * dt
     self:aim_for_player(target_position)
     self:update_angle(dt)
-    self:check_wall()
+    self:check_border_screen()
 end
 
 return ChaseState

@@ -30,7 +30,7 @@ end
 --- We have three possible control types : absolute, tank control and twin stick
 function PlayerState:update(dt, dx1, dy1, dx2, dy2, action)
     self:move_absolute_control(dt, dx1, dy1, dx2, dy2, action)
-    self:check_wall()
+    self:check_border_screen()
 end
 
 function PlayerState:move_absolute_control(dt, dx1, dy1, dx2, dy2, action)
@@ -39,7 +39,6 @@ function PlayerState:move_absolute_control(dt, dx1, dy1, dx2, dy2, action)
     self.position.y = self.position.y + dy1 * self.speed.movement * math.sin(self.angle.target) * dt
     self:update_angle(dt)
 end
-
 
 function PlayerState:move_tank_control(dt, dx1, dy1, dx2, dy2, action)
     self.angle.target = self.speed.rotation * dx1 * dt

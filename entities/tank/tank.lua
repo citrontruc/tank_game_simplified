@@ -37,7 +37,7 @@ end
 function Tank:update_state()
 end
 
-function Tank:check_wall()
+function Tank:check_border_screen()
     self.position.x = math.min(math.max(self.size.x/2, self.position.x), love.graphics.getWidth() - self.size.x/2)
     self.position.y = math.min(math.max(self.size.y/2, self.position.y), love.graphics.getHeight() - self.size.y/2)
 end

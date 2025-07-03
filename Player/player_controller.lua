@@ -33,7 +33,7 @@ function PlayerController:update(dt, x, y, angle, size_x, size_y, joystick)
 end
 
 --movement functions
---movement with keyboard
+--movement with keyboard. Keys are hard coded right now
 function PlayerController:move_with_keyboard(joystick)
     local dx = 0
     local dy = 0
@@ -49,7 +49,7 @@ function PlayerController:move_with_keyboard(joystick)
     if love.keyboard.isDown("left") then
         dx = -1
     end
-    return dx, dy
+    return dx, dy, nil, nil, false
 end
 
 -- movement with controller
@@ -61,16 +61,16 @@ function PlayerController:move_with_controller(dt, joystick)
     if not joystick then return 0, 0 end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
-        dy = 1
+        dy1 = 1
     end
     if joystick:isGamepadDown("dpup")then
-        dy = -1
+        dy1 = -1
     end
     if joystick:isGamepadDown("dpright") then
-        dx = 1
+        dx1 = 1
     end
     if joystick:isGamepadDown("dpleft")then
-        dx = -1
+        dx1 = -1
     end
 
     -- Move with joystick (in which case the left joystick takes care of movement and theright of angle)
@@ -79,28 +79,19 @@ function PlayerController:move_with_controller(dt, joystick)
     local rx = joystick:getAxis(3)
     local ry = joystick:getAxis(4)
     if math.abs(lx) > movement_threshold then
-        dx = lx
+        dx1 = lx
     end
     if math.abs(ly) > movement_threshold then
-        dy = ly
+        dy1 = ly
     end
     if math.abs(rx) > movement_threshold then
-        dx = lx
+        dx2 = rx
     end
-    if math.abs(ly) > movement_threshold then
-        dy = ry
+    if math.abs(ry) > movement_threshold then
+        dy2 = ry
     end
 
-    return dx, dy, angle
-end
-
--- Check that player stays on screen
-function PlayerController:check_position(x, y, dx, dy, size_x, size_y)
-    new_x = math.min(math.max(size_x/2, x + dx), love.graphics.getWidth() - size_x/2)
-    new_y = math.min(math.max(size_y/2, y + dy), love.graphics.getHeight() - size_y/2)
-    dx = new_x - x
-    dy = new_y - y
-    return dx, dy
+    return dx1, dy1, dx2, dy2, false
 end
 
 return PlayerController
