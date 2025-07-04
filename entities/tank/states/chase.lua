@@ -4,7 +4,6 @@
 local ChaseState = {}
 ChaseState.__index = ChaseState
 
-
 function ChaseState:new(object)
     local chase_state = {object = object}
     setmetatable(chase_state, ChaseState)
@@ -28,14 +27,14 @@ function PlayerState:update_angle(dt)
     end
 end
 
-function ChaseState:aim_for_player(target_position)
+function ChaseState:aim_for_target(target_position)
     self.object.angle = math.atan2(target_position.y - self.position.y, target_position.x - self.position.x)
 end
 
 function ChaseState:update(dt, target_position)
     self.position.x = self.position.x + self.speed.movement * math.cos(self.angle.target) * dt
     self.position.y = self.position.y + self.speed.movement * math.sin(self.angle.target) * dt
-    self:aim_for_player(target_position)
+    self:aim_for_target(target_position)
     self:update_angle(dt)
     self:check_border_screen()
 end

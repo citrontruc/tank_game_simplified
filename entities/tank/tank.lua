@@ -1,9 +1,11 @@
 -- An object to create a tank
 
+local PlayerState = require("entities.tank.states.player")
+
 local Tank = {}
 Tank.__index = Tank
 
-function Tank:new(position_x, position_y, size_x, size_y, initial_angle)
+function Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
     local tank = {
         position = {
             x = position_x,
@@ -20,21 +22,29 @@ function Tank:new(position_x, position_y, size_x, size_y, initial_angle)
         speed = {
             movement = speed,
             rotation = rotation_speed
-        }
+        },
+        state_dict = {
+            player = PlayerState
+        },
+        graphics_handler = nil
     }
+    tank.current_state = tank.state_dict[initial_state]
     setmetatable(tank, Tank)
-    return Tank
+    return tank
 end
 
 --Setter
-function Tank:set_grahics_handler(self, graphics_handler)
+function Tank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
 
-function Tank:update(dt)
+function Tank:update(dt, dx1, dy1, dx2, dy2, action)
+    self.current_state:update(dt, self, dx1, dy1, dx2, dy2, action)
+    self:update_state()
 end
 
 function Tank:update_state()
+    self.current_state:update_state(self)
 end
 
 function Tank:check_border_screen()

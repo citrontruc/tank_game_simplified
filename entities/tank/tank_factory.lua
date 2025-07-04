@@ -27,10 +27,11 @@ function TankFactory:new()
 end
 
 -- We need an initial state and information if the tank is in
-function TankFactory:create_tank(position_x, position_y, size_x, size_y, initial_angle, tank_type)
-    local tank = Tank:new(position_x, position_y, size_x, size_y, initial_angle)
-    local chosen_tank_type = TANK_TYPES[tank_types]
-    tank.set_grahics_handler(GraphicsHandler:new(chosen_tank_type.image, chosen_tank_type.image_displacement_angle))
+function TankFactory:new_tank(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, tank_type, initial_state)
+    local tank = Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
+    local chosen_tank_type = TANK_TYPES[tank_type]
+    local graphics_handler = GraphicsHandler:new(chosen_tank_type.image, chosen_tank_type.image_displacement_angle)
+    tank:set_graphics_handler(graphics_handler)
     return tank
 end
 

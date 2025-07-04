@@ -7,9 +7,9 @@ PlayerController.__index = PlayerController
 local movement_threshold = 0.1
 
 --creation
-function PlayerController:new(control_type)
+function PlayerController:new()
     local object = {
-        control_type = control_type,
+        control_type = "keyboard", -- Changes whenever the player touches a key or controller
         joystick = nil
     }
     setmetatable(object, PlayerController)
@@ -23,20 +23,20 @@ function PlayerController:set_control_type(control_type, joystick)
 end
 
 --update
-function PlayerController:update(dt, x, y, angle, size_x, size_y, joystick)
+function PlayerController:update(dt, x, y, angle, size_x, size_y)
     local move_function = {
         keyboard = PlayerController.move_with_keyboard,
         controller = PlayerController.move_with_controller
     }
 
     chosen_move_function = move_function[self.control_type]
-    dx1, dy1, dx2, dy2, action = chosen_move_function(self, joystick)
+    dx1, dy1, dx2, dy2, action = chosen_move_function(self, dt, self.joystick)
     return dx1, dy1, dx2, dy2, action
 end
 
 --movement functions
 --movement with keyboard. Keys are hard coded right now
-function PlayerController:move_with_keyboard(joystick)
+function PlayerController:move_with_keyboard(dt, joystick)
     local dx = 0
     local dy = 0
     if love.keyboard.isDown("down") then
@@ -51,17 +51,17 @@ function PlayerController:move_with_keyboard(joystick)
     if love.keyboard.isDown("left") then
         dx = -1
     end
-    return dx, dy, nil, nil, false
+    return dx, dy, 0, 0, false
 end
 
 -- movement with controller
 function PlayerController:move_with_controller(dt, joystick)
     local dx1 = 0
     local dy1 = 0
-    local dx2 = nil
-    local dy2 = nil
+    local dx2 = 0
+    local dy2 = 0
     if not joystick then
-        return 0, 0
+        return 0, 0, 0, 0, false
     end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
