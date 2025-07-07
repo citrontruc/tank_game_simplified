@@ -26,6 +26,9 @@ function PlayerState:update(dt, tank, dx1, dy1, dx2, dy2, action)
     tank:check_border_screen()
 end
 
+function PlayerState:update_collision_circles(dt, tank, dx1, dy1, dx2, dy2, action)
+end
+
 function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2, action)
     if dx1~=0 or dy1~=0 then
         tank.angle.target = math.atan2(dy1, dx1)

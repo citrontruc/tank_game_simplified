@@ -15,8 +15,8 @@ local flags = {
 --Player variables
 local player_initial_health = 3
 local player_position = {
-    x = 100,
-    y = 100
+    x = 300,
+    y = 300
 }
 local player_speed = {
     movement = 400,
@@ -24,7 +24,7 @@ local player_speed = {
 }
 local player_size = {
     x = 40,
-    y = 40
+    y = 120
 }
 local player_angle = 0
 local player_tank_type = "blue"
@@ -36,7 +36,18 @@ love.window.setMode(1200, 800, flags)
 
 -- Main methods
 function love.load()
-    local player_tank = tank_factory:new_tank(player_position.x, player_position.y, player_size.x, player_size.y, player_angle, player_speed.movement, player_speed.rotation, player_tank_type, "player")
+    local player_tank =
+        tank_factory:new_tank(
+        player_position.x,
+        player_position.y,
+        player_size.x,
+        player_size.y,
+        player_angle,
+        player_speed.movement,
+        player_speed.rotation,
+        player_tank_type,
+        "player"
+    )
     player:set_entity(player_tank)
 end
 

@@ -33,4 +33,17 @@ function GraphicsHandler:draw(position_x, position_y, size_x, size_y, angle, alp
     )
 end
 
+function GraphicsHandler:draw_hitbox(circle_list)
+    love.graphics.setColor(1, 1, 1, alpha)
+    for i = 1, #circle_list do
+        local circle = circle_list[i]
+        love.graphics.circle(
+            "line",
+            circle.x,
+            circle.y,
+            circle.r
+    )
+    end
+end
+
 return GraphicsHandler
