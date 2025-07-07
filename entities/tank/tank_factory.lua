@@ -17,6 +17,22 @@ local TANK_TYPES = {
     }
 }
 
+default_tank_state_variables = {
+    chase = {
+        distance_threshold = 500
+    },
+    idle = {
+        distance_threshold = 400,
+        max_time = 1,
+        x = 0,
+        y = 0
+    },
+    wait = {
+        distance_threshold = 400,
+        max_time = .5
+    }
+}
+
 local TankFactory = {}
 TankFactory.__index = TankFactory
 
@@ -27,12 +43,42 @@ function TankFactory:new()
 end
 
 -- We need an initial state and information if the tank is in
-function TankFactory:new_tank(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, tank_type, initial_state)
-    local tank = Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
+function TankFactory:new_tank(
+    initial_health,
+    position_x,
+    position_y,
+    size_x,
+    size_y,
+    initial_angle,
+    speed,
+    rotation_speed,
+    tank_type,
+    initial_state)
+    local tank =
+        Tank:new(
+        initial_health,
+        position_x,
+        position_y,
+        size_x,
+        size_y,
+        initial_angle,
+        speed,
+        rotation_speed,
+        initial_state
+    )
     local chosen_tank_type = TANK_TYPES[tank_type]
     local graphics_handler = GraphicsHandler:new(chosen_tank_type.image, chosen_tank_type.image_displacement_angle)
     tank:set_graphics_handler(graphics_handler)
     return tank
+end
+
+function TankFactory:set_tank_state_specific_variables(tank, tank_specific_variables)
+    if tank_specific_variables == nil then
+        tank_specific_variables = default_tank_state_variables
+    end
+    for state_name, state_variables in pairs(tank_specific_variables) do
+        tank:set_state_specific_variables(state_name, state_variables)
+    end
 end
 
 return TankFactory

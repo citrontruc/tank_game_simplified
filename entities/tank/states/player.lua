@@ -2,11 +2,12 @@
 -- In the chase state, the enemy walks towards the player.
 
 local PlayerState = {}
+local state_name = "player"
 
 --- We have three possible control types : absolute, tank control and twin stick
 function PlayerState:update(dt, tank, player_input)
     local dx1_tank, dy1_tank, angle_tank =
-        PlayerState:move_twin_stick(
+        PlayerState:move_absolute_control(
         dt,
         tank,
         player_input.dx1,
@@ -43,7 +44,7 @@ function PlayerState:do_action(dt, action)
 end
 
 function PlayerState:update_state()
-    return "player"
+    return state_name
 end
 
 return PlayerState

@@ -3,10 +3,9 @@
 local Player = {}
 Player.__index = Player
 
-function Player:new(initial_health)
+function Player:new()
     local player = {
         player_object = true,
-        health = initial_health,
         player_entity = nil,
         player_controller = nil
     }

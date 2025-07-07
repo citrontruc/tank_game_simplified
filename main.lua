@@ -24,12 +24,43 @@ local player_speed = {
 }
 local player_size = {
     x = 40,
-    y = 120
+    y = 40
 }
 local player_angle = 0
 local player_tank_type = "blue"
 
-local player = player_factory:new_player(player_initial_health)
+-- enemy_tank_variables
+
+local enemy_initial_health = 3
+local enemy_position = {
+    x = 600,
+    y = 600
+}
+local enemy_speed = {
+    movement = 100,
+    rotation = 5
+}
+local enemy_size = {
+    x = 60,
+    y = 60
+}
+local enemy_angle = 0
+local enemy_tank_type = "red"
+
+local player = player_factory:new_player()
+local enemy_tank = tank_factory:new_tank(
+        enemy_initial_health,
+        enemy_position.x,
+        enemy_position.y,
+        enemy_size.x,
+        enemy_size.y,
+        enemy_angle,
+        enemy_speed.movement,
+        enemy_speed.rotation,
+        enemy_tank_type,
+        "idle")
+
+tank_factory:set_tank_state_specific_variables(enemy_tank)
 
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)
@@ -38,6 +69,7 @@ love.window.setMode(1200, 800, flags)
 function love.load()
     local player_tank =
         tank_factory:new_tank(
+        player_initial_health,
         player_position.x,
         player_position.y,
         player_size.x,
@@ -53,10 +85,12 @@ end
 
 function love.update(dt)
     player:update(dt)
+    enemy_tank:update(dt, player.player_entity.position)
 end
 
 function love.draw()
     player:draw()
+    enemy_tank:draw()
 end
 
 -- Methods to change control type.

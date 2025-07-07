@@ -1,13 +1,18 @@
 -- An object to create a tank
 
+local ChaseState = require("entities.tank.states.chase")
+local DeadState = require("entities.tank.states.dead")
+local IdleState = require("entities.tank.states.idle")
 local PlayerState = require("entities.tank.states.player")
+local WaitState = require("entities.tank.states.wait")
 
 local Tank = {}
 Tank.__index = Tank
 
-function Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
+function Tank:new(lives, position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
     local tank = {
         -- Descriptive variables
+        lives = lives,
         position = {
             x = position_x,
             y = position_y
@@ -26,7 +31,16 @@ function Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, 
         },
         -- State variables
         state_dict = {
-            player = PlayerState
+            chase = ChaseState,
+            dead = DeadState,
+            idle = IdleState,
+            player = PlayerState,
+            wait = WaitState
+        },
+        state_specific_variables = {
+            chase = {},
+            wait = {},
+            idle = {}
         },
         state_timer = 0,
         -- Collsion variables
@@ -83,6 +97,10 @@ function Tank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
 
+function Tank:set_state_specific_variables(state_name, variable)
+    self.state_specific_variables[state_name] = variable
+end
+
 -- Update function
 function Tank:update(dt, args)
     local dx1, dy1, angle, action = self.current_state:update(dt, self, args)
@@ -91,7 +109,7 @@ function Tank:update(dt, args)
     if action ~= nil then
         self:do_action(dt, action)
     end
-    self:update_state()
+    self:update_state(args)
     self.state_timer = self.state_timer + dt
 end
 
@@ -124,12 +142,22 @@ function Tank:do_action(dt, action)
 end
 
 -- State related functions
-function Tank:update_state()
-    local state_name = self.current_state:update_state(self)
+function Tank:update_state(args)
+    local state_name, reset_timer = self.current_state:update_state(self, args)
+    if reset_timer == true then 
+        self.state_timer = 0
+    end
+    if self.lives == 0 then
+        state_name = "dead"
+    end
     self.current_state = self.state_dict[state_name]
 end
 
 -- Check position
+function Tank:get_distance_from_point(target_position)
+    return (self.position.x - target_position.x)^2 + (self.position.y - target_position.y)^2
+end
+
 function Tank:check_border_screen()
     local max_size = math.max(self.size.x, self.size.y)
     self.position.x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)
