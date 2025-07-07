@@ -44,31 +44,32 @@ function Tank:initialize_collision_circles()
     if (num_circles % 2 ~= 0) then
         num_circles =  num_circles + 1
     end
+    -- We only store the displacement from the position.x and position.y
+    table.insert(
+        self.circle_list,
+        {
+            x = 0,
+            y = 0,
+            r = smallest_size / 2
+        }
+    )
     for i = 1, math.floor(num_circles / 2) do
         table.insert(
             self.circle_list,
             {
-                x = self.position.x + i * (biggest_size - self.size.x) / num_circles,
-                y = self.position.y + i * (biggest_size - self.size.y) / num_circles,
+                x = i * (biggest_size - self.size.x) / num_circles,
+                y = i * (biggest_size - self.size.y) / num_circles,
                 r = smallest_size / 2
             }
         )
         table.insert(
             self.circle_list,
             {
-                x = self.position.x - i * (biggest_size - self.size.x) / num_circles,
-                y = self.position.y - i * (biggest_size - self.size.y) / num_circles,
+                x = - i * (biggest_size - self.size.x) / num_circles,
+                y = - i * (biggest_size - self.size.y) / num_circles,
                 r = smallest_size / 2
             }
         )
-    table.insert(
-        self.circle_list,
-        {
-            x = self.position.x,
-            y = self.position.y,
-            r = smallest_size / 2
-        }
-    )
     end
 end
 
@@ -82,10 +83,6 @@ function Tank:update(dt, dx1, dy1, dx2, dy2, action)
     self:update_state()
 end
 
-function Tank:update_collision_circles(dt, dx1, dy1, dx2, dy2, action)
-    self.current_state:update_collision_circles(dt, self, dx1, dy1, dx2, dy2, action)
-end
-
 function Tank:update_state()
     self.current_state:update_state(self)
 end
@@ -97,7 +94,7 @@ end
 
 function Tank:draw()
     self.graphics_handler:draw(self.position.x, self.position.y, self.size.x, self.size.y, self.angle.current)
-    self.graphics_handler:draw_hitbox(self.circle_list)
+    self.graphics_handler:draw_hitbox(self.position.x, self.position.y, self.angle.current, self.circle_list)
 end
 
 return Tank

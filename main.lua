@@ -20,7 +20,7 @@ local player_position = {
 }
 local player_speed = {
     movement = 400,
-    rotation = 20
+    rotation = 10
 }
 local player_size = {
     x = 40,
