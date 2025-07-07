@@ -33,7 +33,8 @@ end
 --update functions
 function Player:update(dt)
     local dx1, dy1, dx2, dy2, action = self:get_player_input(dt)
-    self.player_entity:update(dt, dx1, dy1, dx2, dy2, action)
+    self.player_entity:update_position(dt, dx1, dy1, dx2, dy2)
+    self.player_entity:do_action(dt, action)
 end
 
 function Player:get_player_input(dt)

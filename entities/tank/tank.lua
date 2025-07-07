@@ -78,9 +78,16 @@ function Tank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
 
-function Tank:update(dt, dx1, dy1, dx2, dy2, action)
-    self.current_state:update(dt, self, dx1, dy1, dx2, dy2, action)
-    self:update_state()
+function Tank:update(dt, args)
+    self.current_state:update(dt, args)
+end
+
+function Tank:update_position(dt, dx1, dy1, dx2, dy2)
+    self.current_state:update_position(dt, self, dx1, dy1, dx2, dy2)
+end
+
+function Tank:do_action(dt, action)
+    self.current_state:do_action(dt, self, action)
 end
 
 function Tank:update_state()
@@ -88,8 +95,9 @@ function Tank:update_state()
 end
 
 function Tank:check_border_screen()
-    self.position.x = math.min(math.max(self.size.x / 2, self.position.x), love.graphics.getWidth() - self.size.x / 2)
-    self.position.y = math.min(math.max(self.size.y / 2, self.position.y), love.graphics.getHeight() - self.size.y / 2)
+    local max_size = math.max(self.size.x, self.size.y)
+    self.position.x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)
+    self.position.y = math.min(math.max(max_size / 2, self.position.y), love.graphics.getHeight() - max_size / 2)
 end
 
 function Tank:draw()

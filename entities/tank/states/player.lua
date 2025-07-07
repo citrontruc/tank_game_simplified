@@ -21,15 +21,12 @@ function PlayerState:update_angle(dt, tank)
 end
 
 --- We have three possible control types : absolute, tank control and twin stick
-function PlayerState:update(dt, tank, dx1, dy1, dx2, dy2, action)
-    PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2, action)
+function PlayerState:update_position(dt, tank, dx1, dy1, dx2, dy2)
+    PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
     tank:check_border_screen()
 end
 
-function PlayerState:update_collision_circles(dt, tank, dx1, dy1, dx2, dy2, action)
-end
-
-function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2, action)
+function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
     if dx1~=0 or dy1~=0 then
         tank.angle.target = math.atan2(dy1, dx1)
     end
@@ -38,14 +35,14 @@ function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2, action)
     PlayerState:update_angle(dt, tank)
 end
 
-function PlayerState:move_tank_control(dt, tank, dx1, dy1, dx2, dy2, action)
+function PlayerState:move_tank_control(dt, tank, dx1, dy1, dx2, dy2)
     tank.angle.target = tank.angle.target + tank.speed.rotation * dx1 * dt
     tank.angle.current = tank.angle.target
     tank.position.x = tank.position.x + dy1 * tank.speed.movement * math.cos(tank.angle.target) * dt
     tank.position.y = tank.position.y + dy1 * tank.speed.movement * math.sin(tank.angle.target) * dt
 end
 
-function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2, action)
+function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
     if dx2 ~= 0 or dy2 ~= 0 then
         tank.angle.target = math.atan2(dy2, dx2)
     end
@@ -54,9 +51,8 @@ function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2, action)
     tank.position.y = tank.position.y + dy1 * tank.speed.movement * dt
 end
 
--- update state
-function PlayerState:update_state()
+---
+function PlayerState:do_action(dt, action)
 end
-
 
 return PlayerState
