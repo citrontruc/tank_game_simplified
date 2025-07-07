@@ -7,6 +7,7 @@ Tank.__index = Tank
 
 function Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
     local tank = {
+        -- Descriptive variables
         position = {
             x = position_x,
             y = position_y
@@ -23,10 +24,14 @@ function Tank:new(position_x, position_y, size_x, size_y, initial_angle, speed, 
             movement = speed,
             rotation = rotation_speed
         },
+        -- State variables
         state_dict = {
             player = PlayerState
         },
+        state_timer = 0,
+        -- Collsion variables
         circle_list = {},
+        -- Graphics variable
         graphics_handler = nil
     }
     tank.current_state = tank.state_dict[initial_state]
@@ -42,7 +47,7 @@ function Tank:initialize_collision_circles()
     local smallest_size = math.min(self.size.x, self.size.y)
     local num_circles = math.floor(biggest_size / smallest_size + .5)
     if (num_circles % 2 ~= 0) then
-        num_circles =  num_circles + 1
+        num_circles = num_circles + 1
     end
     -- We only store the displacement from the position.x and position.y
     table.insert(
@@ -65,8 +70,8 @@ function Tank:initialize_collision_circles()
         table.insert(
             self.circle_list,
             {
-                x = - i * (biggest_size - self.size.x) / num_circles,
-                y = - i * (biggest_size - self.size.y) / num_circles,
+                x = -i * (biggest_size - self.size.x) / num_circles,
+                y = -i * (biggest_size - self.size.y) / num_circles,
                 r = smallest_size / 2
             }
         )
@@ -78,28 +83,60 @@ function Tank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
 
+-- Update function
 function Tank:update(dt, args)
-    self.current_state:update(dt, args)
+    local dx1, dy1, angle, action = self.current_state:update(dt, self, args)
+    self:update_angle(dt, angle)
+    self:update_position(dt, dx1, dy1)
+    if action ~= nil then
+        self:do_action(dt, action)
+    end
+    self:update_state()
+    self.state_timer = self.state_timer + dt
 end
 
-function Tank:update_position(dt, dx1, dy1, dx2, dy2)
-    self.current_state:update_position(dt, self, dx1, dy1, dx2, dy2)
+-- We have separate updates for position and actions
+function Tank:update_position(dt, dx1, dy1)
+    self.position.x = self.position.x + self.speed.movement * dx1 * dt
+    self.position.y = self.position.y + self.speed.movement * dy1 * dt
+    self:check_border_screen()
+end
+
+function Tank:update_angle(dt, angle)
+    self.angle.target = angle
+    local diff = self:shortest_angle_diff()
+    local max_step = self.speed.rotation * dt
+
+    if math.abs(diff) < max_step then
+        self.angle.current = self.angle.target -- snap to target
+    else
+        self.angle.current = self.angle.current + max_step * (diff > 0 and 1 or -1)
+    end
+end
+
+function Tank:shortest_angle_diff()
+    local diff = (self.angle.target - self.angle.current + math.pi) % (2 * math.pi) - math.pi
+    return diff
 end
 
 function Tank:do_action(dt, action)
     self.current_state:do_action(dt, self, action)
 end
 
+-- State related functions
 function Tank:update_state()
-    self.current_state:update_state(self)
+    local state_name = self.current_state:update_state(self)
+    self.current_state = self.state_dict[state_name]
 end
 
+-- Check position
 function Tank:check_border_screen()
     local max_size = math.max(self.size.x, self.size.y)
     self.position.x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)
     self.position.y = math.min(math.max(max_size / 2, self.position.y), love.graphics.getHeight() - max_size / 2)
 end
 
+-- Draw methods
 function Tank:draw()
     self.graphics_handler:draw(self.position.x, self.position.y, self.size.x, self.size.y, self.angle.current)
     self.graphics_handler:draw_hitbox(self.position.x, self.position.y, self.angle.current, self.circle_list)

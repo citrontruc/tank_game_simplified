@@ -29,8 +29,8 @@ function PlayerController:update(dt, x, y, angle, size_x, size_y)
         controller = PlayerController.move_with_controller
     }
 
-    chosen_move_function = move_function[self.control_type]
-    dx1, dy1, dx2, dy2, action = chosen_move_function(self, dt, self.joystick)
+    local chosen_move_function = move_function[self.control_type]
+    local dx1, dy1, dx2, dy2, action = chosen_move_function(self, dt, self.joystick)
     return dx1, dy1, dx2, dy2, action
 end
 
