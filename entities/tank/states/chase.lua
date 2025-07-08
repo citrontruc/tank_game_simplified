@@ -16,7 +16,7 @@ function ChaseState:update(dt, tank, target_position)
 end
 
 function ChaseState:update_state(tank, target_position)
-    if tank:get_distance_from_point(target_position) < tank.state_specific_variables[state_name].distance_threshold ^ 2 then
+    if tank:get_distance_from_point(target_position) > tank.state_specific_variables[state_name].distance_threshold ^ 2 then
         return "wait", true
     end
     return state_name
