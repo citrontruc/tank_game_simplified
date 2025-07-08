@@ -17,9 +17,13 @@ local TANK_TYPES = {
     }
 }
 
-default_tank_state_variables = {
+local default_tank_state_variables = {
+    player = {
+        action_cooldown = 1
+    },
     chase = {
-        distance_threshold = 500
+        distance_threshold = 500,
+        action_cooldown = 2
     },
     idle = {
         distance_threshold = 400,

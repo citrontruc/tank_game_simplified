@@ -60,8 +60,6 @@ local enemy_tank = tank_factory:new_tank(
         enemy_tank_type,
         "idle")
 
-tank_factory:set_tank_state_specific_variables(enemy_tank)
-
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)
 

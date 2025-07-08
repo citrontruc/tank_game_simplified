@@ -29,6 +29,7 @@ function Tank:new(lives, position_x, position_y, size_x, size_y, initial_angle, 
             movement = speed,
             rotation = rotation_speed
         },
+        action_timer = 0,
         -- State variables
         state_dict = {
             chase = ChaseState,
@@ -38,6 +39,7 @@ function Tank:new(lives, position_x, position_y, size_x, size_y, initial_angle, 
             wait = WaitState
         },
         state_specific_variables = {
+            player = {},
             chase = {},
             wait = {},
             idle = {}
