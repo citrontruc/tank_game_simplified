@@ -10,6 +10,9 @@ end
 
 function ChaseState:update(dt, missile, target_position)
     local angle = self:aim_for_target(target_position, missile.position)
+    if missile.state_timer > missile.state_specific_variables.chase.max_time_survival then
+        missile.health = missile.health - 1
+    end
     return math.cos(angle), math.sin(angle), angle
 end
 

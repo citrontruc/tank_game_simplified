@@ -1,10 +1,5 @@
 -- An object to create missiles
 
-local BouncingState = require("entities.missile.states.bouncing")
-local ChaseState = require("entities.missile.states.chase")
-local NormalState = require("entities.missile.states.normal")
-local TripleState = require("entities.missile.states.triple")
-
 local Missile = {}
 Missile.__index = Missile
 

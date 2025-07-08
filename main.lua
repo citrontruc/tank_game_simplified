@@ -1,16 +1,18 @@
 -- Imports of our item
 
+local EntityHandler = require("entities.entity_handler")
 local PlayerFactory = require("player.player_factory")
 local TankFactory = require("entities.tank.tank_factory")
-
-local player_factory = PlayerFactory:new()
-local tank_factory = TankFactory:new()
 
 -- Variables
 local flags = {
     minwidth = 600,
     minheight = 400
 }
+
+-- Cell size for our screen grid
+local cell_size_x = 100
+local cell_size_y = 100
 
 --Player variables
 local player_initial_health = 3
@@ -28,6 +30,7 @@ local player_size = {
 }
 local player_angle = 0
 local player_tank_type = "blue"
+local player_bullet_type = "normal"
 
 -- enemy_tank_variables
 
@@ -46,27 +49,21 @@ local enemy_size = {
 }
 local enemy_angle = 0
 local enemy_tank_type = "red"
-
-local player = player_factory:new_player()
-local enemy_tank = tank_factory:new_tank(
-        enemy_initial_health,
-        enemy_position.x,
-        enemy_position.y,
-        enemy_size.x,
-        enemy_size.y,
-        enemy_angle,
-        enemy_speed.movement,
-        enemy_speed.rotation,
-        enemy_tank_type,
-        "idle")
+local enemy_bullet_type = "normal"
 
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)
 
+-- create out important objects
+local entity_handler = EntityHandler:new(cell_size_x, cell_size_y)
+local player_factory = PlayerFactory:new()
+local tank_factory = TankFactory:new(entity_handler)
+
+local player = player_factory:new_player()
+
 -- Main methods
 function love.load()
-    local player_tank =
-        tank_factory:new_tank(
+    local player_tank = tank_factory:new_tank(
         player_initial_health,
         player_position.x,
         player_position.y,
@@ -76,19 +73,32 @@ function love.load()
         player_speed.movement,
         player_speed.rotation,
         player_tank_type,
-        "player"
+        "player",
+        player_bullet_type
+    )
+    tank_factory:new_tank(
+        enemy_initial_health,
+        enemy_position.x,
+        enemy_position.y,
+        enemy_size.x,
+        enemy_size.y,
+        enemy_angle,
+        enemy_speed.movement,
+        enemy_speed.rotation,
+        enemy_tank_type,
+        "idle",
+        enemy_bullet_type
     )
     player:set_entity(player_tank)
+    entity_handler:set_player(player)
 end
 
 function love.update(dt)
-    player:update(dt)
-    enemy_tank:update(dt, player.player_entity.position)
+    entity_handler:update(dt)
 end
 
 function love.draw()
-    player:draw()
-    enemy_tank:draw()
+    entity_handler:draw()
 end
 
 -- Methods to change control type.

@@ -40,7 +40,11 @@ function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
 end
 
 ---
-function PlayerState:do_action(dt, action)
+function PlayerState:do_action(dt, tank, action)
+    if tank.action_timer > tank.state_specific_variables[state_name].action_cooldown then 
+        tank.missile_factory.new_missile()
+        tank.action_timer = 0
+    end
 end
 
 function PlayerState:update_state()

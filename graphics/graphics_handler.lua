@@ -1,7 +1,7 @@
 -- Handles the drawing of images
 
 local GraphicsHandler = {}
-GraphicsHandler.__index = GraphicsHandler -- set up proper metatable for OOP
+GraphicsHandler.__index = GraphicsHandler
 
 --creation
 function GraphicsHandler:new(image_item, image_displacement_angle)

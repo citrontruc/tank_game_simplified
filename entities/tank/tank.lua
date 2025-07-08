@@ -9,7 +9,17 @@ local WaitState = require("entities.tank.states.wait")
 local Tank = {}
 Tank.__index = Tank
 
-function Tank:new(lives, position_x, position_y, size_x, size_y, initial_angle, speed, rotation_speed, initial_state)
+function Tank:new(
+    lives,
+    position_x,
+    position_y,
+    size_x,
+    size_y,
+    initial_angle,
+    speed,
+    rotation_speed,
+    initial_state,
+    missile_type)
     local tank = {
         -- Descriptive variables
         lives = lives,
@@ -30,6 +40,7 @@ function Tank:new(lives, position_x, position_y, size_x, size_y, initial_angle, 
             rotation = rotation_speed
         },
         action_timer = 0,
+        missile_type = missile_type,
         -- State variables
         state_dict = {
             chase = ChaseState,
@@ -95,6 +106,10 @@ function Tank:initialize_collision_circles()
 end
 
 --Setter
+function Tank:set_missile_factory(missile_factory)
+    self.missile_factory = missile_factory
+end
+
 function Tank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
@@ -113,6 +128,7 @@ function Tank:update(dt, args)
     end
     self:update_state(args)
     self.state_timer = self.state_timer + dt
+    self.action_timer = self.action_timer + dt
 end
 
 -- We have separate updates for position and actions
@@ -146,7 +162,7 @@ end
 -- State related functions
 function Tank:update_state(args)
     local state_name, reset_timer = self.current_state:update_state(self, args)
-    if reset_timer == true then 
+    if reset_timer == true then
         self.state_timer = 0
     end
     if self.lives == 0 then
@@ -157,7 +173,7 @@ end
 
 -- Check position
 function Tank:get_distance_from_point(target_position)
-    return (self.position.x - target_position.x)^2 + (self.position.y - target_position.y)^2
+    return (self.position.x - target_position.x) ^ 2 + (self.position.y - target_position.y) ^ 2
 end
 
 function Tank:check_border_screen()

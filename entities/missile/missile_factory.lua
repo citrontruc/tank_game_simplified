@@ -30,7 +30,7 @@ local MISSILE_TYPES = {
     }
 }
 
-local default_missile_state_variables = {
+local DEFAULT_MISSILE_STATE_VARIABLES = {
     bouncing = {
         behaviour = NormalState,
         health = 3,
@@ -86,8 +86,10 @@ local default_missile_state_variables = {
 local MissileFactory = {}
 MissileFactory.__index = MissileFactory
 
-function MissileFactory:new()
-    local missile_factory = {}
+function MissileFactory:new(entity_handler)
+    local missile_factory = {
+        entity_handler = entity_handler
+    }
     setmetatable(missile_factory, MissileFactory)
     return missile_factory
 end
@@ -96,25 +98,24 @@ end
 function MissileFactory:new_missile(
     position_x,
     position_y,
-    size_x,
-    size_y,
     initial_angle,
-    speed,
     missile_type,
     state,
     player)
-    local missile = Missile:new(position_x, position_y, size_x, size_y, initial_angle, speed, state, player)
+    local missile_characteristics = DEFAULT_MISSILE_STATE_VARIABLES[state]
     local chosen_missile_type = MISSILE_TYPES[missile_type]
+    local missile = Missile:new(position_x, position_y, missile_characteristics.size.x, missile_characteristics.size.y, initial_angle, missile_characteristics.speed.movement, missile_characteristics.speed.rotation, missile_characteristics.behaviour, player)
     local graphics_handler =
         GraphicsHandler:new(chosen_missile_type.image, chosen_missile_type.image_displacement_angle)
     missile:set_graphics_handler(graphics_handler)
-    self.set_missile_state_specific_variables(missile, default_missile_state_variables)
+    self:set_missile_state_specific_variables(missile, DEFAULT_MISSILE_STATE_VARIABLES)
+    self.entity_handler:assign_entity(missile, player)
     return missile
 end
 
 function MissileFactory:set_missile_state_specific_variables(missile, missile_specific_variables)
     if missile_specific_variables == nil then
-        missile_specific_variables = default_missile_state_variables
+        missile_specific_variables = DEFAULT_MISSILE_STATE_VARIABLES
     end
     for state_name, state_variables in pairs(missile_specific_variables) do
         missile:set_state_specific_variables(state_name, state_variables)
