@@ -10,7 +10,7 @@ local Tank = {}
 Tank.__index = Tank
 
 function Tank:new(
-    lives,
+    health,
     position_x,
     position_y,
     size_x,
@@ -22,7 +22,7 @@ function Tank:new(
     missile_type)
     local tank = {
         -- Descriptive variables
-        lives = lives,
+        health = health,
         position = {
             x = position_x,
             y = position_y
@@ -165,7 +165,7 @@ function Tank:update_state(args)
     if reset_timer == true then
         self.state_timer = 0
     end
-    if self.lives == 0 then
+    if self.health == 0 then
         state_name = "dead"
     end
     self.current_state = self.state_dict[state_name]

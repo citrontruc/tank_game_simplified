@@ -39,6 +39,7 @@ end
 function PlayerController:move_with_keyboard(dt, joystick)
     local dx = 0
     local dy = 0
+    local action = false
     if love.keyboard.isDown("down") then
         dy = 1
     end
@@ -51,7 +52,10 @@ function PlayerController:move_with_keyboard(dt, joystick)
     if love.keyboard.isDown("left") then
         dx = -1
     end
-    return dx, dy, 0, 0, false
+    if love.keyboard.isDown("space") then
+        action = true
+    end
+    return dx, dy, 0, 0, action
 end
 
 -- movement with controller
@@ -60,6 +64,7 @@ function PlayerController:move_with_controller(dt, joystick)
     local dy1 = 0
     local dx2 = 0
     local dy2 = 0
+    local action = false
     if not joystick then
         return 0, 0, 0, 0, false
     end
@@ -75,6 +80,9 @@ function PlayerController:move_with_controller(dt, joystick)
     end
     if joystick:isGamepadDown("dpleft") then
         dx1 = -1
+    end
+    if joystick:isGamepadDown("rightshoulder") then
+        action = true
     end
 
     -- Move with joystick (in which case the left joystick takes care of movement and theright of angle)
@@ -95,7 +103,7 @@ function PlayerController:move_with_controller(dt, joystick)
         dy2 = ry
     end
 
-    return dx1, dy1, dx2, dy2, false
+    return dx1, dy1, dx2, dy2, action
 end
 
 return PlayerController

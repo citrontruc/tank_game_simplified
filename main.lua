@@ -30,7 +30,7 @@ local player_size = {
 }
 local player_angle = 0
 local player_tank_type = "blue"
-local player_bullet_type = "normal"
+local player_missile_type = "normal"
 
 -- enemy_tank_variables
 
@@ -49,7 +49,7 @@ local enemy_size = {
 }
 local enemy_angle = 0
 local enemy_tank_type = "red"
-local enemy_bullet_type = "normal"
+local enemy_missile_type = "normal"
 
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)

@@ -100,9 +100,8 @@ function MissileFactory:new_missile(
     position_y,
     initial_angle,
     missile_type,
-    state,
     player)
-    local missile_characteristics = DEFAULT_MISSILE_STATE_VARIABLES[state]
+    local missile_characteristics = DEFAULT_MISSILE_STATE_VARIABLES[missile_type]
     local chosen_missile_type = MISSILE_TYPES[missile_type]
     local missile = Missile:new(position_x, position_y, missile_characteristics.size.x, missile_characteristics.size.y, initial_angle, missile_characteristics.speed.movement, missile_characteristics.speed.rotation, missile_characteristics.behaviour, player)
     local graphics_handler =
