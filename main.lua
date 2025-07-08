@@ -74,7 +74,7 @@ function love.load()
         player_speed.rotation,
         player_tank_type,
         "player",
-        player_bullet_type
+        player_missile_type
     )
     tank_factory:new_tank(
         enemy_initial_health,
@@ -87,7 +87,7 @@ function love.load()
         enemy_speed.rotation,
         enemy_tank_type,
         "idle",
-        enemy_bullet_type
+        enemy_missile_type
     )
     player:set_entity(player_tank)
     entity_handler:set_player(player)

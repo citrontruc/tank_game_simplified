@@ -123,8 +123,8 @@ function Tank:update(dt, args)
     local dx1, dy1, angle, action = self.current_state:update(dt, self, args)
     self:update_angle(dt, angle)
     self:update_position(dt, dx1, dy1)
-    if action ~= nil then
-        self:do_action(dt, action)
+    if action == true then
+        self:do_action(dt)
     end
     self:update_state(args)
     self.state_timer = self.state_timer + dt
@@ -155,8 +155,8 @@ function Tank:shortest_angle_diff()
     return diff
 end
 
-function Tank:do_action(dt, action)
-    self.current_state:do_action(dt, self, action)
+function Tank:do_action(dt)
+    self.current_state:do_action(dt, self)
 end
 
 -- State related functions

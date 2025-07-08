@@ -15,7 +15,7 @@ function PlayerState:update(dt, tank, player_input)
         player_input.dx2,
         player_input.dy2
     )
-    return dx1_tank, dy1_tank, angle_tank, action_controller
+    return dx1_tank, dy1_tank, angle_tank, player_input.action
 end
 
 function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
@@ -40,14 +40,16 @@ function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
 end
 
 ---
-function PlayerState:do_action(dt, tank, action)
-    if tank.action_timer < tank.state_specific_variables[state_name].action_cooldown then 
-        tank.missile_factory.new_missile(
+function PlayerState:do_action(dt, tank)
+    print("missile")
+    if tank.action_timer > tank.state_specific_variables[state_name].action_cooldown then
+        print("missile                   sdfgferdfgersfdsedfx")
+        --[[tank.missile_factory:new_missile(
             tank.position.x + tank.size.x * math.cos(tank.angle.target) - tank.size.y * math.sin(tank.angle.target),
             tank.position.y + tank.size.x * math.sin(tank.angle.target) + tank.size.y * math.cos(tank.angle.target),
             tank.angle.target,
             tank.missile_type,
-            true)
+            true]]
         tank.action_timer = 0
     end
 end

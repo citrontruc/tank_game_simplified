@@ -3,7 +3,7 @@
 --Imports
 local GraphicsHandler = require("graphics.graphics_handler")
 local ImageItem = require("graphics.image_item")
-local Tank = require("entities.missile.missile")
+local Missile = require("entities.missile.missile")
 
 -- Missile behaviours
 local ChaseState = require("entities.missile.states.chase")
