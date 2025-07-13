@@ -156,7 +156,13 @@ function Tank:shortest_angle_diff()
 end
 
 function Tank:do_action(dt)
-    self.current_state:do_action(dt, self)
+    self.missile_factory:new_missile(
+            self.position.x + self.size.x * math.cos(self.angle.target),
+            self.position.y + self.size.y * math.sin(self.angle.target),
+            self.angle.target,
+            self.missile_type,
+            true
+        )
 end
 
 -- State related functions
@@ -164,6 +170,7 @@ function Tank:update_state(args)
     local state_name, reset_timer = self.current_state:update_state(self, args)
     if reset_timer == true then
         self.state_timer = 0
+        self.action_timer = 0
     end
     if self.health == 0 then
         state_name = "dead"

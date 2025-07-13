@@ -6,12 +6,13 @@ local state_name = "idle"
 
 function IdleState:update(dt, tank, args)
     --print(state_name)
+    local action = false
     local angle = tank.angle.target
     self:check_border_screen(tank)
     if tank.state_specific_variables[state_name].y ~= 0 or tank.state_specific_variables[state_name].x ~= 0 then
         angle = math.atan2(tank.state_specific_variables[state_name].y, tank.state_specific_variables[state_name].x)
     end
-    return tank.state_specific_variables[state_name].x, tank.state_specific_variables[state_name].y, angle
+    return tank.state_specific_variables[state_name].x, tank.state_specific_variables[state_name].y, angle, action
 end
 
 function IdleState:update_state(tank, target_position)

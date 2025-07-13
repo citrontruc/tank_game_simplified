@@ -6,7 +6,7 @@ local state_name = "wait"
 
 function WaitState:update(dt, tank, args)
     --print(state_name)
-    return 0, 0, tank.angle.target
+    return 0, 0, tank.angle.target, false
 end
 
 function WaitState:update_state(tank, target_position)

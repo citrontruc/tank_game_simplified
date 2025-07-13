@@ -11,8 +11,13 @@ end
 
 function ChaseState:update(dt, tank, target_position)
     --print(state_name)
+    local action = false
     local angle = self:aim_for_target(target_position, tank.position)
-    return math.cos(angle), math.sin(angle), angle
+    if tank.action_timer > tank.state_specific_variables[state_name].action_cooldown then
+        action = true
+        tank.action_timer = 0
+    end
+    return math.cos(angle), math.sin(angle), angle, action
 end
 
 function ChaseState:update_state(tank, target_position)
