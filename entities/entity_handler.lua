@@ -18,7 +18,6 @@ function EntityHandler:new(cell_size_x, cell_size_y)
         },
         list_evaluate_collision = {}
     }
-    print(entity_handler.num_cell_x, entity_handler.num_cell_y)
     setmetatable(entity_handler, EntityHandler)
     return entity_handler
 end

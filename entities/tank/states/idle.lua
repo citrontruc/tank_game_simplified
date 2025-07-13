@@ -5,7 +5,7 @@ local IdleState = {}
 local state_name = "idle"
 
 function IdleState:update(dt, tank, args)
-    print(state_name)
+    --print(state_name)
     local angle = tank.angle.target
     self:check_border_screen(tank)
     if tank.state_specific_variables[state_name].y ~= 0 or tank.state_specific_variables[state_name].x ~= 0 then

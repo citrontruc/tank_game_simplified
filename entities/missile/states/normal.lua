@@ -4,7 +4,7 @@
 local NormalState = {}
 
 function NormalState:update(dt, missile, args)
-    return - math.cos(missile.angle.target), - math.sin(missile.angle.target), missile.angle.target
+    return math.cos(missile.angle.target), math.sin(missile.angle.target), missile.angle.target
 end
 
 return NormalState

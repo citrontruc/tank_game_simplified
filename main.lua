@@ -11,8 +11,8 @@ local flags = {
 }
 
 -- Cell size for our screen grid
-local cell_size_x = 100
-local cell_size_y = 100
+local cell_size_x = 200
+local cell_size_y = 200
 
 --Player variables
 local player_initial_health = 3
@@ -98,6 +98,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.print("Memory (KB): " .. collectgarbage("count"), 10, 10)
     entity_handler:draw()
 end
 

@@ -10,7 +10,7 @@ function ChaseState:aim_for_target(target_position, tank_position)
 end
 
 function ChaseState:update(dt, tank, target_position)
-    print(state_name)
+    --print(state_name)
     local angle = self:aim_for_target(target_position, tank.position)
     return math.cos(angle), math.sin(angle), angle
 end

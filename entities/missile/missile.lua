@@ -31,10 +31,12 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
             triple = {}
         },
         behaviour = initial_state,
-        state_timer = 0
+        state_timer = 0,
+        circle_list = {}
+        
     }
     setmetatable(missile, Missile)
-    missile:initialize_collision_circles()
+    --missile:initialize_collision_circles()
     return missile
 end
 
@@ -76,6 +78,15 @@ function Missile:initialize_collision_circles()
     end
 end
 
+-- Setter methods
+function Missile:set_graphics_handler(graphics_handler)
+    self.graphics_handler = graphics_handler
+end
+
+function Missile:set_state_specific_variables(state_name, variable)
+    self.state_specific_variables[state_name] = variable
+end
+
 -- Update functions
 function Missile:update(dt, args)
     local dx1, dy1, angle = self.behaviour:update(dt, self, args)
@@ -89,10 +100,10 @@ function Missile:update_position(dt, dx1, dy1)
     self.position.x = self.position.x + self.speed.movement * dx1 * dt
     self.position.y = self.position.y + self.speed.movement * dy1 * dt
     self:check_border_screen()
+    self:update_angle(dt)
 end
 
-function Missile:update_angle(dt, angle)
-    self.angle.target = angle
+function Missile:update_angle(dt)
     local diff = self:shortest_angle_diff()
     local max_step = self.speed.rotation * dt
 

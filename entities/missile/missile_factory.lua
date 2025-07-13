@@ -103,13 +103,13 @@ function MissileFactory:new_missile(
     player)
     local missile_characteristics = DEFAULT_MISSILE_STATE_VARIABLES[missile_type]
     local chosen_missile_type = MISSILE_TYPES[missile_type]
-    local missile = Missile:new(position_x, position_y, missile_characteristics.size.x, missile_characteristics.size.y, initial_angle, missile_characteristics.speed.movement, missile_characteristics.speed.rotation, missile_characteristics.behaviour, player)
+    local missile = Missile:new(missile_characteristics.health, position_x, position_y, missile_characteristics.size.x, missile_characteristics.size.y, initial_angle, missile_characteristics.speed.movement, missile_characteristics.speed.rotation, missile_characteristics.behaviour, player)
     local graphics_handler =
         GraphicsHandler:new(chosen_missile_type.image, chosen_missile_type.image_displacement_angle)
     missile:set_graphics_handler(graphics_handler)
     self:set_missile_state_specific_variables(missile, DEFAULT_MISSILE_STATE_VARIABLES)
-    self.entity_handler:assign_entity(missile, player)
-    return missile
+    self.entity_handler:assign(missile, player)
+    -- return missile
 end
 
 function MissileFactory:set_missile_state_specific_variables(missile, missile_specific_variables)

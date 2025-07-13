@@ -39,17 +39,16 @@ function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
     return dx1, dy1, angle
 end
 
----
+--- Action function
 function PlayerState:do_action(dt, tank)
-    print("missile")
     if tank.action_timer > tank.state_specific_variables[state_name].action_cooldown then
-        print("missile                   sdfgferdfgersfdsedfx")
-        --[[tank.missile_factory:new_missile(
+        tank.missile_factory:new_missile(
             tank.position.x + tank.size.x * math.cos(tank.angle.target) - tank.size.y * math.sin(tank.angle.target),
             tank.position.y + tank.size.x * math.sin(tank.angle.target) + tank.size.y * math.cos(tank.angle.target),
             tank.angle.target,
             tank.missile_type,
-            true]]
+            true
+        )
         tank.action_timer = 0
     end
 end
