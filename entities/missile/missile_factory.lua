@@ -95,15 +95,22 @@ function MissileFactory:new(entity_handler)
 end
 
 -- We need an initial state and information if the tank is in
-function MissileFactory:new_missile(
-    position_x,
-    position_y,
-    initial_angle,
-    missile_type,
-    player)
+function MissileFactory:new_missile(position_x, position_y, initial_angle, missile_type, player)
     local missile_characteristics = DEFAULT_MISSILE_STATE_VARIABLES[missile_type]
     local chosen_missile_type = MISSILE_TYPES[missile_type]
-    local missile = Missile:new(missile_characteristics.health, position_x, position_y, missile_characteristics.size.x, missile_characteristics.size.y, initial_angle, missile_characteristics.speed.movement, missile_characteristics.speed.rotation, missile_characteristics.behaviour, player)
+    local missile =
+        Missile:new(
+        missile_characteristics.health,
+        position_x,
+        position_y,
+        missile_characteristics.size.x,
+        missile_characteristics.size.y,
+        initial_angle,
+        missile_characteristics.speed.movement,
+        missile_characteristics.speed.rotation,
+        missile_characteristics.behaviour,
+        player
+    )
     local graphics_handler =
         GraphicsHandler:new(chosen_missile_type.image, chosen_missile_type.image_displacement_angle)
     missile:set_graphics_handler(graphics_handler)

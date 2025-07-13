@@ -50,6 +50,7 @@ function EntityHandler:update(dt)
     self:update_all_entity(dt)
     self:update_cells()
     self:evaluate_collision()
+    self:check_health()
 end
 
 function EntityHandler:update_all_entity(dt)
@@ -80,7 +81,25 @@ function EntityHandler:insert_in_correct_cell(entity)
     table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y], key)
 end
 
+-- For entities in the same cell, we evaluate collisions.
 function EntityHandler:evaluate_collision()
+
+end
+
+function EntityHandler:check_health()
+    -- We remove "dead" elements from our loop. A better way would be to deactivate them.
+    for i = #self.list_object.player, 1, -1 do
+        local object = self.list_object.player[i]
+        if object.health <= 0 then
+            table.remove(self.list_object.player, i)
+        end
+    end
+    for i = #self.list_object.enemy, 1, -1 do
+        local object = self.list_object.enemy[i]
+        if object.health <= 0 then
+            table.remove(self.list_object.enemy, i)
+        end
+    end
 end
 
 -- Draw functions

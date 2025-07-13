@@ -98,7 +98,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.print("Memory (KB): " .. collectgarbage("count"), 10, 10)
+    -- love.graphics.print("Memory (KB): " .. collectgarbage("count"), 10, 10)
     entity_handler:draw()
 end
 

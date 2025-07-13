@@ -129,6 +129,7 @@ function Missile:check_border_screen()
         self.angle.target = self.angle.target + math.pi
     end
     if self.position.y ~= y then
+        self.health = self.health - 1
         self.position.y = y
         self.angle.target = - self.angle.target
     end
