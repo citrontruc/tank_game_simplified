@@ -5,6 +5,11 @@
 local EntityHandler = {}
 EntityHandler.__index = EntityHandler
 
+local HUD_POSITION = {
+    x = 50,
+    y = 50
+}
+
 function EntityHandler:new(cell_size_x, cell_size_y)
     local entity_handler = {
         cell_size_x = cell_size_x,
@@ -56,10 +61,10 @@ end
 function EntityHandler:update_all_entity(dt)
     self.player:update(dt)
     local player_entity_position = self.player.player_entity.position
-    for key, object in pairs(self.list_object.player) do
+    for _, object in pairs(self.list_object.player) do
         object:update(dt)
     end
-    for key, object in pairs(self.list_object.enemy) do
+    for _, object in pairs(self.list_object.enemy) do
         object:update(dt, player_entity_position)
     end
 end
@@ -105,12 +110,24 @@ end
 -- Draw functions
 function EntityHandler:draw()
     self.player.player_entity:draw()
-    for key, object in pairs(self.list_object.player) do
+    for _, object in pairs(self.list_object.player) do
         object:draw()
     end
-    for key, object in pairs(self.list_object.enemy) do
+    for _, object in pairs(self.list_object.enemy) do
         object:draw()
     end
+    self:draw_hud()
+    -- Draw hud once we have drawn all our entities.
+end
+
+function EntityHandler:draw_hud()
+    -- We haven't implemented a player hud so right now, we will just display player life
+    --self.player.hud:draw()
+    love.graphics.print(
+    "Player health " .. self.player.player_entity.health,
+    HUD_POSITION.x,
+    HUD_POSITION.y
+)
 end
 
 return EntityHandler
