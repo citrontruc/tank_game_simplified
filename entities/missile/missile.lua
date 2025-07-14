@@ -3,7 +3,8 @@
 local Missile = {}
 Missile.__index = Missile
 
-function Missile:new(initial_health, position_x, position_y, size_x, size_y, initial_angle, movement_speed, rotation_speed, initial_state, player)
+function Missile:new(initial_health, position_x, position_y, size_x, size_y, initial_angle, movement_speed,
+                     rotation_speed, initial_state, player)
     local missile = {
         -- Descriptive variables
         health = initial_health,
@@ -23,6 +24,7 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
             movement = movement_speed,
             rotation = rotation_speed
         },
+        player = player,
         -- State variables
         state_specific_variables = {
             bouncing = {},
@@ -33,10 +35,10 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
         behaviour = initial_state,
         state_timer = 0,
         circle_list = {}
-        
+
     }
     setmetatable(missile, Missile)
-    --missile:initialize_collision_circles()
+    missile:initialize_collision_circles()
     return missile
 end
 
@@ -131,7 +133,7 @@ function Missile:check_border_screen()
     if self.position.y ~= y then
         self.health = self.health - 1
         self.position.y = y
-        self.angle.target = - self.angle.target
+        self.angle.target = -self.angle.target
     end
 end
 
