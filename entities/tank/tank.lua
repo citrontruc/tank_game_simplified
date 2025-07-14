@@ -19,9 +19,11 @@ function Tank:new(
     speed,
     rotation_speed,
     initial_state,
-    missile_type)
+    missile_type,
+    player)
     local tank = {
         -- Descriptive variables
+        player = player, -- Check if the tank belongs to the player
         health = health,
         position = {
             x = position_x,
@@ -39,7 +41,7 @@ function Tank:new(
             movement = speed,
             rotation = rotation_speed
         },
-        action_timer = 0,
+        action_timer = 0, -- Actions have a cooldown
         missile_type = missile_type,
         -- State variables
         state_dict = {
@@ -55,7 +57,7 @@ function Tank:new(
             wait = {},
             idle = {}
         },
-        state_timer = 0,
+        state_timer = 0, -- Some states involve cooldowns and a timer. It is stored here.
         -- Collsion variables
         circle_list = {},
         -- Graphics variable
@@ -161,7 +163,7 @@ function Tank:do_action(dt)
             self.position.y + self.size.y * math.sin(self.angle.target),
             self.angle.target,
             self.missile_type,
-            true
+            self.player
         )
 end
 

@@ -116,18 +116,18 @@ function EntityHandler:draw()
     for _, object in pairs(self.list_object.enemy) do
         object:draw()
     end
-    self:draw_hud()
     -- Draw hud once we have drawn all our entities.
+    self:draw_hud()
 end
 
 function EntityHandler:draw_hud()
     -- We haven't implemented a player hud so right now, we will just display player life
     --self.player.hud:draw()
     love.graphics.print(
-    "Player health " .. self.player.player_entity.health,
-    HUD_POSITION.x,
-    HUD_POSITION.y
-)
+        "Player health " .. self.player.player_entity.health,
+        HUD_POSITION.x,
+        HUD_POSITION.y
+    )
 end
 
 return EntityHandler

@@ -9,7 +9,7 @@ function IdleState:update(dt, tank, args)
     local action = false
     local angle = tank.angle.target
     self:check_border_screen(tank)
-    if tank.state_specific_variables[state_name].y ~= 0 or tank.state_specific_variables[state_name].x ~= 0 then
+    if tank.state_specific_variables[state_name].x ~= 0 then
         angle = math.atan(tank.state_specific_variables[state_name].y / tank.state_specific_variables[state_name].x)
         if tank.state_specific_variables[state_name].x < 0 then
             if tank.state_specific_variables[state_name].y < 0 then
@@ -17,6 +17,10 @@ function IdleState:update(dt, tank, args)
             else
                 angle = angle - math.pi
             end
+        end
+    else
+        if tank.state_specific_variables[state_name].y ~= 0 then
+            angle = math.pi / 2 * tank.state_specific_variables[state_name].y / math.abs(tank.state_specific_variables[state_name].y)
         end
     end
     return tank.state_specific_variables[state_name].x, tank.state_specific_variables[state_name].y, angle, action

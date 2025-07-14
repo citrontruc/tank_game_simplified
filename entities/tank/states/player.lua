@@ -25,7 +25,7 @@ end
 
 function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
     local angle = tank.angle.target
-    if dx1 ~= 0 or dy1 ~= 0 then
+    if dx1 ~= 0 then
         angle = math.atan(dy1 / dx1)
         if dx1 < 0 then
             if dy1 < 0 then
@@ -33,6 +33,10 @@ function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
             else
                 angle = angle - math.pi
             end
+        end
+    else
+        if dy1 ~= 0 then
+            angle = math.pi / 2 * dy1 / math.abs(dy1)
         end
     end
     return dx1, dy1, angle
@@ -45,7 +49,7 @@ end
 
 function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
     local angle = tank.angle.target
-    if dx2 ~= 0 or dy2 ~= 0 then
+    if dx2 ~= 0 then
         angle = math.atan(dy2 / dx2)
         if dx2 < 0 then
             if dy2 < 0 then
@@ -53,6 +57,10 @@ function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
             else
                 angle = angle - math.pi
             end
+        end
+    else 
+        if dy2 ~= 0 then
+            angle = math.pi / 2 * dy2 / math.abs(dy2)
         end
     end
     return dx1, dy1, angle

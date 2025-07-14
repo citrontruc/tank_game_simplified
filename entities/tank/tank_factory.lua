@@ -63,6 +63,10 @@ function TankFactory:new_tank(
     tank_type,
     initial_state,
     missile_type)
+    local player = false
+    if initial_state == "player" then
+        player = true
+    end
     local tank =
         Tank:new(
         initial_health,
@@ -74,15 +78,16 @@ function TankFactory:new_tank(
         speed,
         rotation_speed,
         initial_state,
-        missile_type
+        missile_type,
+        player
     )
     local chosen_tank_type = TANK_TYPES[tank_type]
     local graphics_handler = GraphicsHandler:new(chosen_tank_type.image, chosen_tank_type.image_displacement_angle)
     tank:set_graphics_handler(graphics_handler)
     tank:set_missile_factory(self.missile_factory)
     self:set_tank_state_specific_variables(tank)
-    if initial_state ~= "player" then
-        self.entity_handler:assign(tank, false)
+    if player == false then
+        self.entity_handler:assign(tank, player)
     end
     return tank
 end

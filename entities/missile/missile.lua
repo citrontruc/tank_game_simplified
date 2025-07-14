@@ -7,6 +7,7 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
                      rotation_speed, initial_state, player)
     local missile = {
         -- Descriptive variables
+        player = player, -- Check if the missile belongs to the player
         health = initial_health,
         position = {
             x = position_x,
@@ -24,7 +25,6 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
             movement = movement_speed,
             rotation = rotation_speed
         },
-        player = player,
         -- State variables
         state_specific_variables = {
             bouncing = {},

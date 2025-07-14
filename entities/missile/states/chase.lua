@@ -6,13 +6,18 @@ local ChaseState = {}
 function ChaseState:aim_for_target(target_position, missile_position)
     local distance_y = target_position.y - missile_position.y
     local distance_x = target_position.x - missile_position.x
-    local angle = math.atan(distance_y / distance_x)
-    if distance_x < 0 then
-        if distance_y > 0 then
-            angle = angle + math.pi
-        else
-            angle = angle - math.pi
+    local angle = 0
+    if distance_x ~= 0 then
+        angle = math.atan(distance_y / distance_x)
+        if distance_x < 0 then
+            if distance_y > 0 then
+                angle = angle + math.pi
+            else
+                angle = angle - math.pi
+            end
         end
+    else
+        angle = math.pi / 2 * distance_y / math.abs(distance_y)
     end
     return angle
 end
