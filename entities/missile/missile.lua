@@ -97,7 +97,6 @@ function Missile:update(dt, args)
     self:update_angle(dt, angle)
     self:update_position(dt, dx1, dy1)
     self.state_timer = self.state_timer + dt
-    print("missile " ..self.angle.current .. ", " .. self.angle.target)
 end
 
 -- We have separate updates for position and actions

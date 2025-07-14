@@ -152,7 +152,6 @@ function Tank:update_angle(dt, angle)
     else
         self.angle.current = self.angle.current + max_step * MathSupplement.sign(diff)
     end
-    print("tank " ..self.angle.current .. ", " .. self.angle.target)
 end
 
 function Tank:shortest_angle_diff()
