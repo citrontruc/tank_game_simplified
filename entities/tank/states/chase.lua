@@ -7,7 +7,7 @@ local state_name = "chase"
 function ChaseState:aim_for_target(target_position, tank_position)
     local distance_y = target_position.y - tank_position.y
     local distance_x = target_position.x - tank_position.x
-    local angle = math.atan(distance_y/distance_x)
+    local angle = math.atan(distance_y / distance_x)
     if distance_x < 0 then
         if distance_y > 0 then
             angle = angle + math.pi
