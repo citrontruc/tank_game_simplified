@@ -192,7 +192,7 @@ end
 -- Draw methods
 function Tank:draw()
     self.graphics_handler:draw(self.position.x, self.position.y, self.size.x, self.size.y, self.angle.current)
-    self.graphics_handler:draw_hitbox(self.position.x, self.position.y, self.angle.current, self.circle_list)
+    --self.graphics_handler:draw_hitbox(self.position.x, self.position.y, self.angle.current, self.circle_list)
 end
 
 return Tank
