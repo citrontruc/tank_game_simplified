@@ -1,13 +1,15 @@
 -- An object to create a state for our enemy
 -- In the chase state, the enemy walks towards the player.
 
+local MathSupplement = require("utils.math_supplement")
+
 local PlayerState = {}
 local state_name = "player"
 
 --- We have three possible control types : absolute, tank control and twin stick
 function PlayerState:update(dt, tank, player_input)
     local dx1_tank, dy1_tank, angle_tank =
-        PlayerState:move_absolute_control(
+        PlayerState:move_tank_control(
             dt,
             tank,
             player_input.dx1,
@@ -24,22 +26,8 @@ function PlayerState:update(dt, tank, player_input)
 end
 
 function PlayerState:move_absolute_control(dt, tank, dx1, dy1, dx2, dy2)
-    local angle = tank.angle.target
-    if dx1 ~= 0 then
-        angle = math.atan(dy1 / dx1)
-        if dx1 < 0 then
-            if dy1 < 0 then
-                angle = angle + math.pi
-            else
-                angle = angle - math.pi
-            end
-        end
-    else
-        if dy1 ~= 0 then
-            angle = math.pi / 2 * dy1 / math.abs(dy1)
-        end
-    end
-    return dx1, dy1, angle
+    local angle = MathSupplement.atan(dy1, dx1, tank.angle.target)
+    return math.abs(dx1) * math.cos(angle), math.abs(dy1) * math.sin(angle), angle
 end
 
 function PlayerState:move_tank_control(dt, tank, dx1, dy1, dx2, dy2)
@@ -48,21 +36,7 @@ function PlayerState:move_tank_control(dt, tank, dx1, dy1, dx2, dy2)
 end
 
 function PlayerState:move_twin_stick(dt, tank, dx1, dy1, dx2, dy2)
-    local angle = tank.angle.target
-    if dx2 ~= 0 then
-        angle = math.atan(dy2 / dx2)
-        if dx2 < 0 then
-            if dy2 < 0 then
-                angle = angle + math.pi
-            else
-                angle = angle - math.pi
-            end
-        end
-    else 
-        if dy2 ~= 0 then
-            angle = math.pi / 2 * dy2 / math.abs(dy2)
-        end
-    end
+    local angle = MathSupplement.atan(dy2, dx2, tank.angle.target)
     return dx1, dy1, angle
 end
 

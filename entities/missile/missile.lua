@@ -1,5 +1,7 @@
 -- An object to create missiles
 
+local MathSupplement = require("utils.math_supplement")
+
 local Missile = {}
 Missile.__index = Missile
 
@@ -92,9 +94,10 @@ end
 -- Update functions
 function Missile:update(dt, args)
     local dx1, dy1, angle = self.behaviour:update(dt, self, args)
-    self:update_angle(dt)
+    self:update_angle(dt, angle)
     self:update_position(dt, dx1, dy1)
     self.state_timer = self.state_timer + dt
+    print("missile " ..self.angle.current .. ", " .. self.angle.target)
 end
 
 -- We have separate updates for position and actions
@@ -102,23 +105,19 @@ function Missile:update_position(dt, dx1, dy1)
     self.position.x = self.position.x + self.speed.movement * dx1 * dt
     self.position.y = self.position.y + self.speed.movement * dy1 * dt
     self:check_border_screen()
-    self:update_angle(dt)
 end
 
-function Missile:update_angle(dt)
-    local diff = self:shortest_angle_diff()
+function Missile:update_angle(dt, angle)
+    self.angle.target = MathSupplement.normalize_angle(angle)
+    self.angle.current = MathSupplement.normalize_angle(self.angle.current)
+    local diff = MathSupplement.shortest_angle_diff(self.angle.target, self.angle.current)
     local max_step = self.speed.rotation * dt
 
     if math.abs(diff) < max_step then
         self.angle.current = self.angle.target -- snap to target
     else
-        self.angle.current = self.angle.current + max_step * (diff > 0 and 1 or -1)
+        self.angle.current = self.angle.current + max_step * MathSupplement.sign(diff)
     end
-end
-
-function Missile:shortest_angle_diff()
-    local diff = (self.angle.target - self.angle.current + math.pi) % (2 * math.pi) - math.pi
-    return diff
 end
 
 function Missile:check_border_screen()

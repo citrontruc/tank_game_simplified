@@ -69,18 +69,18 @@ function TankFactory:new_tank(
     end
     local tank =
         Tank:new(
-        initial_health,
-        position_x,
-        position_y,
-        size_x,
-        size_y,
-        initial_angle,
-        speed,
-        rotation_speed,
-        initial_state,
-        missile_type,
-        player
-    )
+            initial_health,
+            position_x,
+            position_y,
+            size_x,
+            size_y,
+            initial_angle,
+            speed,
+            rotation_speed,
+            initial_state,
+            missile_type,
+            player
+        )
     local chosen_tank_type = TANK_TYPES[tank_type]
     local graphics_handler = GraphicsHandler:new(chosen_tank_type.image, chosen_tank_type.image_displacement_angle)
     tank:set_graphics_handler(graphics_handler)

@@ -1,5 +1,7 @@
 -- An object to create a tank
 
+local MathSupplement = require("utils.math_supplement")
+
 local ChaseState = require("entities.tank.states.chase")
 local DeadState = require("entities.tank.states.dead")
 local IdleState = require("entities.tank.states.idle")
@@ -141,15 +143,16 @@ function Tank:update_position(dt, dx1, dy1)
 end
 
 function Tank:update_angle(dt, angle)
-    self.angle.target = angle
-    local diff = self:shortest_angle_diff()
+    self.angle.target = MathSupplement.normalize_angle(angle)
+    self.angle.current = MathSupplement.normalize_angle(self.angle.current)
+    local diff = MathSupplement.shortest_angle_diff(self.angle.target, self.angle.current)
     local max_step = self.speed.rotation * dt
-
     if math.abs(diff) < max_step then
         self.angle.current = self.angle.target -- snap to target
     else
-        self.angle.current = self.angle.current + max_step * (diff > 0 and 1 or -1)
+        self.angle.current = self.angle.current + max_step * MathSupplement.sign(diff)
     end
+    print("tank " ..self.angle.current .. ", " .. self.angle.target)
 end
 
 function Tank:shortest_angle_diff()

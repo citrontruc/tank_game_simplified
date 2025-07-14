@@ -1,28 +1,16 @@
 -- An object to create a state for our enemy
 -- In the idle state, the enemy chooses a direction at random and walks in that direction.
 
+local MathSupplement = require("utils.math_supplement")
+
 local IdleState = {}
 local state_name = "idle"
 
 function IdleState:update(dt, tank, args)
     --print(state_name)
     local action = false
-    local angle = tank.angle.target
     self:check_border_screen(tank)
-    if tank.state_specific_variables[state_name].x ~= 0 then
-        angle = math.atan(tank.state_specific_variables[state_name].y / tank.state_specific_variables[state_name].x)
-        if tank.state_specific_variables[state_name].x < 0 then
-            if tank.state_specific_variables[state_name].y < 0 then
-                angle = angle + math.pi
-            else
-                angle = angle - math.pi
-            end
-        end
-    else
-        if tank.state_specific_variables[state_name].y ~= 0 then
-            angle = math.pi / 2 * tank.state_specific_variables[state_name].y / math.abs(tank.state_specific_variables[state_name].y)
-        end
-    end
+    local angle = MathSupplement.atan(tank.state_specific_variables[state_name].y, tank.state_specific_variables[state_name].x)
     return tank.state_specific_variables[state_name].x, tank.state_specific_variables[state_name].y, angle, action
 end
 
