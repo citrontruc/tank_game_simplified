@@ -4,10 +4,10 @@
 local NormalState = {}
 
 function NormalState:update(dt, missile, args)
-    return sign(math.cos(missile.angle.target)), sign(math.sin(missile.angle.target)), missile.angle.target
+    return self.sign(math.cos(missile.angle.target)), self.sign(math.sin(missile.angle.target)), missile.angle.target
 end
 
-function sign(number)
+function NormalState.sign(number)
     return math.abs(number) < 0.001 and 0 or math.abs(number)/number
 end
 

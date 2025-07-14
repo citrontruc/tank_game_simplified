@@ -12,4 +12,4 @@ function DeadState:update_state(tank, target_position)
     return state_name
 end
 
-return WaitState
+return DeadState

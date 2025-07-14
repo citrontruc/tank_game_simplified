@@ -13,8 +13,8 @@ function PlayerFactory:new()
     return player_factory
 end
 
-function PlayerFactory:new_player(initial_health)
-    local player = Player:new(initial_health)
+function PlayerFactory:new_player()
+    local player = Player:new()
     local player_controller = PlayerController:new()
     player:set_controller(player_controller)
     return player

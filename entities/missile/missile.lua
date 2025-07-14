@@ -90,7 +90,7 @@ end
 -- Update functions
 function Missile:update(dt, args)
     local dx1, dy1, angle = self.behaviour:update(dt, self, args)
-    self:update_angle(dt, angle)
+    self:update_angle(dt)
     self:update_position(dt, dx1, dy1)
     self.state_timer = self.state_timer + dt
 end

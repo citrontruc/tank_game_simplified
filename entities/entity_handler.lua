@@ -78,7 +78,7 @@ end
 function EntityHandler:insert_in_correct_cell(entity)
     local cell_x = math.floor(entity.position.x / self.cell_size_x + 0.5)
     local cell_y = math.floor(entity.position.y / self.cell_size_y + 0.5)
-    table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y], key)
+    table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y], entity)
 end
 
 -- For entities in the same cell, we evaluate collisions.

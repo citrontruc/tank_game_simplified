@@ -23,7 +23,7 @@ function PlayerController:set_control_type(control_type, joystick)
 end
 
 --update
-function PlayerController:update(dt, x, y, angle, size_x, size_y)
+function PlayerController:update(dt)
     local move_function = {
         keyboard = PlayerController.move_with_keyboard,
         controller = PlayerController.move_with_controller
