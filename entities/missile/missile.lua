@@ -37,7 +37,6 @@ function Missile:new(initial_health, position_x, position_y, size_x, size_y, ini
         behaviour = initial_state,
         state_timer = 0,
         circle_list = {}
-
     }
     setmetatable(missile, Missile)
     missile:initialize_collision_circles()
@@ -124,15 +123,33 @@ function Missile:check_border_screen()
     local x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)
     local y = math.min(math.max(max_size / 2, self.position.y), love.graphics.getHeight() - max_size / 2)
     if self.position.x ~= x then
-        self.health = self.health - 1
+        self:damage()
         self.position.x = x
         self.angle.target = self.angle.target + math.pi
     end
     if self.position.y ~= y then
-        self.health = self.health - 1
+        self:damage()
         self.position.y = y
         self.angle.target = -self.angle.target
     end
+end
+
+-- Collision function
+function Missile:collision(other_entity)
+    self:damage()
+    if other_entity.position.x > self.position.x then
+        self.angle.target = self.angle.target + math.pi
+    end
+    if other_entity.position.y > self.position.y then
+        self.angle.target = - self.angle.target
+    end
+    if other_entity.damage ~= nil then
+        other_entity:damage()
+    end
+end
+
+function Missile:damage()
+    self.health = self.health - 1
 end
 
 -- Draw methods

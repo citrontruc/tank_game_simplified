@@ -2,6 +2,8 @@
 
 -- Imports
 
+MathSupplement = require("utils.math_supplement")
+
 local EntityHandler = {}
 EntityHandler.__index = EntityHandler
 
@@ -32,7 +34,7 @@ function EntityHandler:reset_cells()
     self.list_evaluate_collision = {}
     for x = 0, self.num_cell_x + 1 do
         for y = 0, self.num_cell_y + 1 do
-            self.list_evaluate_collision[x .. "-" .. y] = {}
+            self.list_evaluate_collision[x .. "-" .. y] = { player = {}, enemy = {} }
         end
     end
 end
@@ -71,24 +73,70 @@ end
 
 function EntityHandler:update_cells()
     self:reset_cells()
-    self:insert_in_correct_cell(self.player.player_entity)
-    for key, object in pairs(self.list_object.player) do
-        self:insert_in_correct_cell(object)
+    self:insert_in_correct_cell(self.player.player_entity, true)
+    for _, object in pairs(self.list_object.player) do
+        self:insert_in_correct_cell(object, true)
     end
-    for key, object in pairs(self.list_object.enemy) do
-        self:insert_in_correct_cell(object)
+    for _, object in pairs(self.list_object.enemy) do
+        self:insert_in_correct_cell(object, false)
     end
 end
 
-function EntityHandler:insert_in_correct_cell(entity)
+function EntityHandler:insert_in_correct_cell(entity, player)
     local cell_x = math.floor(entity.position.x / self.cell_size_x + 0.5)
     local cell_y = math.floor(entity.position.y / self.cell_size_y + 0.5)
-    table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y], entity)
+    if player == true then
+        table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y].player, entity)
+    else
+        table.insert(self.list_evaluate_collision[cell_x .. "-" .. cell_y].enemy, entity)
+    end
 end
 
 -- For entities in the same cell, we evaluate collisions.
 function EntityHandler:evaluate_collision()
+    for cell_x = 0, self.num_cell_x + 1 do
+        for cell_y = 0, self.num_cell_y + 1 do
+            local num_player = #self.list_evaluate_collision[cell_x .. "-" .. cell_y].player
+            local num_enemy = #self.list_evaluate_collision[cell_x .. "-" .. cell_y].enemy
+            if num_player > 0 and num_enemy > 0 then
+                -- Faire l'évaluation de s'il y a des collisions.
+                for player_index = 1, num_player do
+                    for enemy_index = 1, num_enemy do
+                        local object_1 = self.list_evaluate_collision[cell_x .. "-" .. cell_y].player[player_index]
+                        local object_2 = self.list_evaluate_collision[cell_x .. "-" .. cell_y].enemy[enemy_index]
+                        for _, circle_player in ipairs(object_1.circle_list) do
+                            for _, circle_enemy in ipairs(object_2.circle_list) do
+                                local circle_1 = {
+                                    x = object_1.position.x + circle_player.x * math.cos(object_1.angle.current) -
+                                    circle_player.y * math.sin(object_1.angle.current),
+                                    y = object_1.position.y + circle_player.x * math.sin(object_1.angle.current) +
+                                    circle_player.y * math.cos(object_1.angle.current),
+                                    r = circle_player.r
+                                }
+                                local circle_2 = {
+                                    x = object_2.position.x + circle_enemy.x * math.cos(object_2.angle.current) -
+                                    circle_enemy.y * math.sin(object_2.angle.current),
+                                    y = object_2.position.y + circle_enemy.x * math.sin(object_2.angle.current) +
+                                    circle_enemy.y * math.cos(object_2.angle.current),
+                                    r = circle_enemy.r
+                                }
+                                if MathSupplement.check_intersection_cicles(circle_1, circle_2) then
+                                    self:collision_between_two_objects(object_1, object_2)
+                                    --print("collision")
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
+function EntityHandler:collision_between_two_objects(object_1, object_2)
+    object_1:collision(object_2)
+    object_2:collision(object_1)
 end
 
 function EntityHandler:check_health()

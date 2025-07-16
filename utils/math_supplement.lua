@@ -3,6 +3,7 @@
 local MathSupplement = {}
 local THRESHOLD = 10^-5
 
+-- angles
 function MathSupplement.atan(y, x, default_value)
     if default_value == nil then
         default_value = 0
@@ -32,6 +33,13 @@ end
 function MathSupplement.shortest_angle_diff(target_angle, current_angle)
     local diff = MathSupplement.normalize_angle(target_angle - current_angle)
     return diff
+end
+
+-- circles
+function MathSupplement.check_intersection_cicles(circle_1, circle_2)
+    local dx = circle_1.x - circle_2.x
+    local dy = circle_1.y - circle_2.y
+    return dx^2 + dy^2 < (circle_1.r + circle_2.r)^2
 end
 
 function MathSupplement.sign(number)

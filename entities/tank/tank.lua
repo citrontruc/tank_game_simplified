@@ -176,9 +176,9 @@ function Tank:update_state(args)
         self.state_timer = 0
         self.action_timer = 0
     end
-    if self.health == 0 then
-        state_name = "dead"
-    end
+    --if self.health == 0 then
+    --    state_name = "dead"
+    --end
     self.current_state = self.state_dict[state_name]
 end
 
@@ -191,6 +191,39 @@ function Tank:check_border_screen()
     local max_size = math.max(self.size.x, self.size.y)
     self.position.x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)
     self.position.y = math.min(math.max(max_size / 2, self.position.y), love.graphics.getHeight() - max_size / 2)
+end
+
+-- Collision function
+function Tank:collision(other_entity)
+    local dx = math.abs(other_entity.position.x - self.position.x) -
+    0.5 * (
+        other_entity.size.x * math.abs(math.cos(other_entity.angle.current)) +
+        other_entity.size.y * math.abs(math.sin(other_entity.angle.current)) +
+        self.size.x * math.abs(math.cos(self.angle.current)) +
+        self.size.y * math.abs(math.sin(self.angle.current))
+    )
+    local dy = math.abs(other_entity.position.y - self.position.y) -
+    0.5 * (
+        other_entity.size.x * math.abs(math.sin(other_entity.angle.current)) +
+        other_entity.size.y * math.abs(math.cos(other_entity.angle.current)) +
+        self.size.x * math.abs(math.sin(self.angle.current)) +
+        self.size.y * math.abs(math.cos(self.angle.current))
+    )
+    print(dx, dy)
+    if self.position.x > other_entity.position.x then
+        self.position.x = self.position.x + dx
+    else
+        self.position.x = self.position.x - dx
+    end
+    if self.position.y > other_entity.position.y then
+        self.position.y = self.position.y + dy
+    else
+        self.position.y = self.position.y - dy
+    end
+end
+
+function Tank:damage()
+    self.health = self.health - 1
 end
 
 -- Draw methods
