@@ -12,6 +12,11 @@ local HUD_POSITION = {
     y = 50
 }
 
+local PAUSE_POSITION = {
+    x = love.graphics.getWidth() /2,
+    y = love.graphics.getHeight() /2,
+}
+
 function EntityHandler:new(cell_size_x, cell_size_y)
     local entity_handler = {
         cell_size_x = cell_size_x,
@@ -53,11 +58,15 @@ end
 
 -- Update functions to update all elements in our entity_hendler
 function EntityHandler:update(dt)
-    self:reset_cells()
-    self:update_all_entity(dt)
-    self:update_cells()
-    self:evaluate_collision()
-    self:check_health()
+    if self.player.pause ~= true then
+        self:reset_cells()
+        self:update_all_entity(dt)
+        self:update_cells()
+        self:evaluate_collision()
+        self:check_health()
+    else
+        self.player:update(dt)
+    end
 end
 
 function EntityHandler:update_all_entity(dt)
@@ -166,6 +175,9 @@ function EntityHandler:draw()
     end
     -- Draw hud once we have drawn all our entities.
     self:draw_hud()
+    if self.player.pause == true then
+        self:draw_pause()
+    end
 end
 
 function EntityHandler:draw_hud()
@@ -175,6 +187,15 @@ function EntityHandler:draw_hud()
         "Player health " .. self.player.player_entity.health,
         HUD_POSITION.x,
         HUD_POSITION.y
+    )
+end
+
+function EntityHandler:draw_pause()
+    -- Draws a puse menu so that the user knows the game is paused
+    love.graphics.print(
+        "The game is paused, click on <p> to continue.",
+        PAUSE_POSITION.x,
+        PAUSE_POSITION.y
     )
 end
 

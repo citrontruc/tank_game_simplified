@@ -209,7 +209,6 @@ function Tank:collision(other_entity)
         self.size.x * math.abs(math.sin(self.angle.current)) +
         self.size.y * math.abs(math.cos(self.angle.current))
     )
-    print(dx, dy)
     if self.position.x > other_entity.position.x then
         self.position.x = self.position.x - dx / 2
     else

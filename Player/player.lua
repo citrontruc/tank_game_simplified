@@ -7,7 +7,8 @@ function Player:new()
     local player = {
         player_object = true,
         player_entity = nil,
-        player_controller = nil
+        player_controller = nil,
+        pause = false
     }
     setmetatable(player, Player)
     return player
@@ -30,13 +31,13 @@ end
 
 --update functions
 function Player:update(dt)
-    local dx1, dy1, dx2, dy2, action = self:get_player_input(dt)
-    self.player_entity:update(dt, {dx1 = dx1, dy1 = dy1, dx2 = dx2, dy2 = dy2, action = action})
-end
-
-function Player:get_player_input(dt)
-    local dx1, dy1, dx2, dy2, action = self.player_controller:update(dt)
-    return dx1, dy1, dx2, dy2, action
+    local dx1, dy1, dx2, dy2, action, pause = self.player_controller:update(dt)
+    if pause == true then
+        self.pause = not self.pause
+    end
+    if self.pause ~= true then
+        self.player_entity:update(dt, {dx1 = dx1, dy1 = dy1, dx2 = dx2, dy2 = dy2, action = action})
+    end
 end
 
 -- draw functions

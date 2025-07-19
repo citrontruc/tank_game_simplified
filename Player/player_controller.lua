@@ -30,8 +30,8 @@ function PlayerController:update(dt)
     }
 
     local chosen_move_function = move_function[self.control_type]
-    local dx1, dy1, dx2, dy2, action = chosen_move_function(self, dt, self.joystick)
-    return dx1, dy1, dx2, dy2, action
+    local dx1, dy1, dx2, dy2, action, pause = chosen_move_function(self, dt, self.joystick)
+    return dx1, dy1, dx2, dy2, action, pause
 end
 
 --movement functions
@@ -40,6 +40,7 @@ function PlayerController:move_with_keyboard(dt, joystick)
     local dx = 0
     local dy = 0
     local action = false
+    local pause = false
     if love.keyboard.isDown("down") then
         dy = 1
     end
@@ -55,7 +56,10 @@ function PlayerController:move_with_keyboard(dt, joystick)
     if love.keyboard.isDown("space") then
         action = true
     end
-    return dx, dy, 0, 0, action
+    if love.keyboard.isDown("p") then
+        pause = true
+    end
+    return dx, dy, 0, 0, action, pause
 end
 
 -- movement with controller
@@ -65,8 +69,9 @@ function PlayerController:move_with_controller(dt, joystick)
     local dx2 = 0
     local dy2 = 0
     local action = false
+    local pause = false
     if not joystick then
-        return 0, 0, 0, 0, false
+        return 0, 0, 0, 0, false, false
     end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
@@ -84,8 +89,11 @@ function PlayerController:move_with_controller(dt, joystick)
     if joystick:isGamepadDown("rightshoulder") then
         action = true
     end
+    if joystick:isGamepadDown("start") then
+        pause = true
+    end
 
-    -- Move with joystick (in which case the left joystick takes care of movement and theright of angle)
+    -- Movement with both joystick is possible (but we need to change the move function in the player state)
     local lx = joystick:getAxis(1)
     local ly = joystick:getAxis(2)
     local rx = joystick:getAxis(3)
@@ -103,7 +111,7 @@ function PlayerController:move_with_controller(dt, joystick)
         dy2 = ry
     end
 
-    return dx1, dy1, dx2, dy2, action
+    return dx1, dy1, dx2, dy2, action, pause
 end
 
 return PlayerController
