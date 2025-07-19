@@ -2,3 +2,6 @@
 -- When a level ends, the game transitions to the next level.
 
 local LevelHandler = {}
+
+
+return LevelHandler

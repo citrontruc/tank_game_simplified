@@ -183,10 +183,6 @@ function Tank:update_state(args)
 end
 
 -- Check position
-function Tank:get_distance_from_point(target_position)
-    return (self.position.x - target_position.x) ^ 2 + (self.position.y - target_position.y) ^ 2
-end
-
 function Tank:check_border_screen()
     local max_size = math.max(self.size.x, self.size.y)
     self.position.x = math.min(math.max(max_size / 2, self.position.x), love.graphics.getWidth() - max_size / 2)

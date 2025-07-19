@@ -2,7 +2,7 @@
 
 -- Imports
 
-MathSupplement = require("utils.math_supplement")
+local MathSupplement = require("utils.math_supplement")
 
 local EntityHandler = {}
 EntityHandler.__index = EntityHandler

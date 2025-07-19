@@ -35,6 +35,10 @@ function MathSupplement.shortest_angle_diff(target_angle, current_angle)
     return diff
 end
 
+function MathSupplement.get_distance_from_point(position_1, position_2)
+    return (position_1.x - position_2.x) ^ 2 + (position_1.y - position_2.y) ^ 2
+end
+
 -- circles
 function MathSupplement.check_intersection_cicles(circle_1, circle_2)
     local dx = circle_1.x - circle_2.x

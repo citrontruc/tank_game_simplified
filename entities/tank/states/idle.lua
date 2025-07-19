@@ -15,7 +15,7 @@ function IdleState:update(dt, tank, args)
 end
 
 function IdleState:update_state(tank, target_position)
-    if tank:get_distance_from_point(target_position) < tank.state_specific_variables[state_name].distance_threshold ^ 2 then
+    if MathSupplement.get_distance_from_point(tank.position, target_position) < tank.state_specific_variables[state_name].distance_threshold ^ 2 then
         tank.state_specific_variables[state_name].x, tank.state_specific_variables[state_name].y =
             self.update_direction()
         return "chase", true
