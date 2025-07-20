@@ -1,6 +1,7 @@
 -- An object to initialize all the levels.
 -- When a level ends, the game transitions to the next level.
 
+local BeginningMenu = require("levels.beginning_menu")
 local Level_1 = require("levels.game_levels.level_1")
 local Level_2 = require("levels.game_levels.level_2")
 local Level_3 = require("levels.game_levels.level_3")
@@ -14,6 +15,7 @@ function LevelHandler:new(tank_factory, entity_handler, player)
         entity_handler = entity_handler,
         player = player,
         list_levels = {
+            BeginningMenu,
             Level_1,
             Level_2,
             Level_3
@@ -38,8 +40,16 @@ function LevelHandler:load_new_level()
 end
 
 function LevelHandler:update(dt)
-    self.entity_handler:update(dt)
-    self.current_level:update(dt, self.entity_handler:get_player_position())
+    if self.current_level.type ~= "menu" then
+        self.entity_handler:update(dt)
+        self.current_level:update(dt, self.entity_handler:get_player_position())
+        if self.player.player_entity.health <= 0 then
+            self.current_level_index = 1
+            self:load_new_level()
+        end
+    else
+        self.current_level:update(dt)
+    end
     if self.current_level.next_level == true then
         self.current_level_index = self.current_level_index + 1
         self:load_new_level()
@@ -47,8 +57,10 @@ function LevelHandler:update(dt)
 end
 
 function LevelHandler:draw()
-    self.entity_handler:draw()
-    self.current_level:draw_text()
+    if self.current_level.type ~= "menu" then
+        self.entity_handler:draw()
+    end
+    self.current_level:draw()
 end
 
 return LevelHandler

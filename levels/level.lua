@@ -32,7 +32,8 @@ function Level:new(level_name)
         finished = false,
         next_level = false,
         timer = 0,
-        level_name = level_name
+        level_name = level_name,
+        type = "level"
     }
     setmetatable(level, Level)
     return level
@@ -102,7 +103,7 @@ function Level:draw_tileset()
 end
 
 -- Text in order to display the number of tanks to destroy and messages to greet the player at the beginning and end of each levels
-function Level:draw_text()
+function Level:draw()
     love.graphics.print(
         "There are " .. #self.active_tanks + #self.remaining_tanks .. " tanks to beat, you can do it!",
         COUNTDOWN_POSITION.x,
