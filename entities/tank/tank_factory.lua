@@ -1,5 +1,7 @@
 -- An object to create tanks
 
+-- math.randomseed(os.time())
+
 --Imports
 local MissileFactory = require("entities.missile.missile_factory")
 local GraphicsHandler = require("graphics.graphics_handler")

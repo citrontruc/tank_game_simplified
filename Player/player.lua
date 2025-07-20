@@ -1,5 +1,7 @@
 -- An object to create a player character
 
+local PAUSE_INERTIA = 0.1
+
 local Player = {}
 Player.__index = Player
 
@@ -8,7 +10,8 @@ function Player:new()
         player_object = true,
         player_entity = nil,
         player_controller = nil,
-        pause = false
+        pause = false,
+        pause_timer = 0
     }
     setmetatable(player, Player)
     return player
@@ -31,9 +34,13 @@ end
 
 --update functions
 function Player:update(dt)
+    self.pause_timer = self.pause_timer + dt
     local dx1, dy1, dx2, dy2, action, pause = self.player_controller:update(dt)
     if pause == true then
-        self.pause = not self.pause
+        if self.pause_timer > PAUSE_INERTIA then
+            self.pause = not self.pause
+        end
+        self.pause_timer = 0
     end
     if self.pause ~= true then
         self.player_entity:update(dt, {dx1 = dx1, dy1 = dy1, dx2 = dx2, dy2 = dy2, action = action})
