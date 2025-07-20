@@ -50,7 +50,7 @@ local enemy_size = {
 }
 local enemy_angle = 0
 local enemy_tank_type = "red"
-local enemy_missile_type = "chase"
+local enemy_missile_type = "normal"
 local MAX_TANK = 4
 
 -- Change sizeof screen
@@ -82,20 +82,24 @@ function love.load()
         "player",
         player_missile_type
     )
-    local enemy_tank = tank_factory:new_tank(
-        enemy_initial_health,
-        enemy_position.x,
-        enemy_position.y,
-        enemy_size.x,
-        enemy_size.y,
-        enemy_angle,
-        enemy_speed.movement,
-        enemy_speed.rotation,
-        enemy_tank_type,
-        "idle",
-        enemy_missile_type
-    )
-    level:set_remaining_tanks({enemy_tank})
+    local enemy_tank_table = {}
+    for i = 1, 4, 1 do
+        local enemy_tank = tank_factory:new_tank(
+            enemy_initial_health,
+            math.random(enemy_size.x, love.graphics.getWidth() - enemy_size.x), -- initial x position
+            math.random(enemy_size.y, love.graphics.getHeight() - enemy_size.y),
+            enemy_size.x,
+            enemy_size.y,
+            math.rad(math.random(0, 360)),
+            enemy_speed.movement,
+            enemy_speed.rotation,
+            enemy_tank_type,
+            "idle",
+            enemy_missile_type
+        )
+        table.insert(enemy_tank_table, enemy_tank)
+    end
+    level:set_remaining_tanks(enemy_tank_table)
     player:set_entity(player_tank)
     entity_handler:set_player(player)
 end

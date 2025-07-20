@@ -10,7 +10,7 @@ local COUNTDOWN_POSITION = {
     y = 50
 }
 local DISTANCE_THRESHOLD = 100^2
-local SPAWN_COOLDOWN =  1
+local SPAWN_COOLDOWN =  2
 local VICTORY_POSITION = {
     x = love.graphics.getWidth() / 2,
     y = love.graphics.getHeight() / 2,
