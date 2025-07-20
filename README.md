@@ -9,10 +9,21 @@ This repository contains the code for a tank game in lua created using the frame
 This repository contains the following files and folders
 - main.py: entry point of the repository. Launch by going in the repository and typing ```love .```.
 - assets: graphical assets. Lots of png files.
-- entities: state machines describing the different elements that will be used to create our game.
+- entities: state machines describing the different elements that will be used to create our levels.
 - graphics: contains objects to display objects on screen.
-- levels: TODO (contains the levels in the game).
+- levels: Contains the definition of all our levels and of our beginning menu.
 - player: contains the objects to control our entities as the player.
 - utils: useful functions used globally by multiple components.
+
+## Controls
+
+In menus:
+- Arrow keys to move and space bar to validate.
+
+Outside of menu
+- Up and down arrow keys to go forward, backward.
+- Right and left arrow keys to turn right and left.
+- Space bar to shoot.
+- p button to pause game.
 
 Have a great day

@@ -109,7 +109,7 @@ function Tank:initialize_collision_circles()
     end
 end
 
---Setter
+-- Setter
 function Tank:set_missile_factory(missile_factory)
     self.missile_factory = missile_factory
 end

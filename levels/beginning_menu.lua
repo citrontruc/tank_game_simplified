@@ -1,4 +1,4 @@
--- A "level" menu. It represents a menu that the user can interact with.
+-- The beginning menu for the game.
 
 local MenuHandler = require("entities.menu_handler.menu_handler")
 
@@ -22,7 +22,7 @@ local OPTION_TEXT = {
 local OPTION_Y_DISPLACEMENT = 50
 
 
-
+--Creates our menu and the menu_handler to control it.
 function BeginningMenu:new(player)
     local menu = {
         menu_name = MENU_NAME,
@@ -41,6 +41,7 @@ function BeginningMenu:update(dt)
     self.player:update(dt)
 end
 
+-- Does the action where the player cursor is.
 function BeginningMenu:do_action(option_index, do_action)
     self.current_option_index = (option_index - 1) % #self.option_text_value + 1
     if do_action == true then
@@ -73,7 +74,7 @@ function BeginningMenu:draw()
         if i == self.current_option_index then
             scale_x = 2
             scale_y = 2
-            love.graphics.setColor(1,0,0,1)
+            love.graphics.setColor(1, 0, 0, 1)
         end
         love.graphics.print(
             option_text,

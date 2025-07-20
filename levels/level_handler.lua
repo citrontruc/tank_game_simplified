@@ -32,6 +32,7 @@ function LevelHandler:get_player()
     return self.player
 end
 
+-- Go to the next level. Cycles back if we run out of levels
 function LevelHandler:load_new_level()
     if self.current_level_index > #self.list_levels then
         self.current_level_index = 1
@@ -39,6 +40,7 @@ function LevelHandler:load_new_level()
     self.current_level = self.list_levels[self.current_level_index].initialize(self.player, self.tank_factory, self.entity_handler)
 end
 
+-- Updates all the objectsin our levels and Checks level state.
 function LevelHandler:update(dt)
     if self.current_level.type ~= "menu" then
         self.entity_handler:update(dt)

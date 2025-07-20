@@ -16,6 +16,7 @@ function MenuHandler:new(menu)
     return menu
 end
 
+-- Move menu button on the screen
 function MenuHandler:update(dt, player_control)
     self.timer = self.timer + dt
     if self.timer > MENU_INERTIA then
@@ -30,6 +31,7 @@ function MenuHandler:update(dt, player_control)
     self.menu:do_action(self.current_option_index, false)
 end
 
+-- If the player presses an option, do the option associated to the button.
 function MenuHandler:do_action()
     self.menu:do_action(self.current_option_index, true)
 end
