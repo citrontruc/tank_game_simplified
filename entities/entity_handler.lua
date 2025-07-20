@@ -178,7 +178,9 @@ function EntityHandler:draw()
         object:draw()
     end
     -- Draw hud once we have drawn all our entities.
-    self:draw_hud()
+    if self.player.player_entity.type ~= "menu" then
+        self:draw_hud()
+    end
     if self.player.pause == true then
         self:draw_pause()
     end

@@ -63,7 +63,8 @@ function Tank:new(
         -- Collsion variables
         circle_list = {},
         -- Graphics variable
-        graphics_handler = nil
+        graphics_handler = nil,
+        type = "tank"
     }
     tank.current_state = tank.state_dict[initial_state]
     setmetatable(tank, Tank)

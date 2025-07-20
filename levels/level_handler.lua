@@ -34,13 +34,13 @@ function LevelHandler:load_new_level()
     if self.current_level_index > #self.list_levels then
         self.current_level_index = 1
     end
-    self.current_level = self.list_levels[self.current_level_index].initialize(self.tank_factory, self.entity_handler, self.player)
+    self.current_level = self.list_levels[self.current_level_index].initialize(self.player, self.tank_factory, self.entity_handler)
 end
 
 function LevelHandler:update(dt)
     self.entity_handler:update(dt)
     self.current_level:update(dt, self.entity_handler:get_player_position())
-    if self.current_level.finished == true then
+    if self.current_level.next_level == true then
         self.current_level_index = self.current_level_index + 1
         self:load_new_level()
     end

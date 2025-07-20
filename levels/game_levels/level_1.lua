@@ -2,6 +2,7 @@
 
 local Level = require("levels.level")
 local level_1 = {}
+local LEVEL_NAME = "tutorial"
 
 --Player variables
 local PLAYER_INITIAL_HEALTH = 3
@@ -40,8 +41,8 @@ local ENEMY_TANK_TYPE = "red"
 local ENEMY_MISSILE_TYPE = "normal"
 local MAX_TANK = 4
 
-function level_1.initialize(tank_factory, entity_handler, player)
-    local level = Level:new()
+function level_1.initialize(player, tank_factory, entity_handler)
+    local level = Level:new(LEVEL_NAME)
     -- We initialize our player and our enemies
     local player_tank = tank_factory:new_tank(
         PLAYER_INITIAL_HEALTH,
