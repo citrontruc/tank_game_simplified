@@ -4,13 +4,13 @@
 -- Imports
 local MathSupplement = require("utils.math_supplement")
 
-
+local BEGINNING_COUNTDOWN = 5
 local COUNTDOWN_POSITION = {
     x = love.graphics.getWidth() - 50,
     y = 50
 }
 local DISTANCE_THRESHOLD = 100^2
-local SPAWN_COOLDOWN =  2
+local SPAWN_COOLDOWN =  3
 local VICTORY_POSITION = {
     x = love.graphics.getWidth() / 2,
     y = love.graphics.getHeight() / 2,
@@ -19,18 +19,28 @@ local VICTORY_POSITION = {
 local Level = {}
 Level.__index = Level
 
-function Level:new(entity_handler, max_tank)
+function Level:new()
     local level = {
         active_tanks = {},
         remaining_tanks = {},
         tileset = {},
         finished = false,
         timer = 0,
-        max_tank = max_tank,
-        entity_handler = entity_handler
+        max_tank = 0,
+        entity_handler = {},
+        beginning = true
     }
     setmetatable(level, Level)
     return level
+end
+
+-- Setter functions
+function Level:set_max_tank(max_tank)
+    self.max_tank = max_tank
+end
+
+function Level:set_entity_handler(entity_handler)
+    self.entity_handler = entity_handler
 end
 
 function Level:set_remaining_tanks(remaining_tanks)
@@ -44,12 +54,18 @@ end
 -- Each level has a set number of tanks to clear.
 function Level:update(dt, player_position)
     self.timer = self.timer + dt
-    self:check_tank_status()
-    if #self.remaining_tanks == 0 and #self.active_tanks == 0 then
-        self.finished = true
-    end
-    if #self.remaining_tanks > 0 and #self.active_tanks < self.max_tank and self.timer > SPAWN_COOLDOWN then
-        self:spawn_tank(player_position)
+    if self.beginning ~= true then
+        self:check_tank_status()
+        if #self.remaining_tanks == 0 and #self.active_tanks == 0 then
+            self.finished = true
+        end
+        if #self.remaining_tanks > 0 and #self.active_tanks < self.max_tank and self.timer > SPAWN_COOLDOWN then
+            self:spawn_tank(player_position)
+        end
+    else
+        if self.timer > BEGINNING_COUNTDOWN then
+            self.beginning = false
+        end
     end
 end
 
@@ -83,6 +99,13 @@ function Level:draw_text()
         COUNTDOWN_POSITION.x,
         COUNTDOWN_POSITION.y
     )
+    if self.beginning then
+        love.graphics.print(
+            "Welcome to the level! You must beat " .. #self.remaining_tanks .. " tanks to win!",
+            VICTORY_POSITION.x,
+            VICTORY_POSITION.y
+        )
+    end
     if self.finished then
         love.graphics.print(
             "Good job, you made it through the level!",
