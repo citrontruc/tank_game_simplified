@@ -36,10 +36,6 @@ local player_missile_type = "normal"
 -- enemy_tank_variables
 
 local enemy_initial_health = 3
-local enemy_position = {
-    x = 600,
-    y = 600
-}
 local enemy_speed = {
     movement = 100,
     rotation = 5
@@ -48,7 +44,6 @@ local enemy_size = {
     x = 60,
     y = 60
 }
-local enemy_angle = 0
 local enemy_tank_type = "red"
 local enemy_missile_type = "normal"
 local MAX_TANK = 4
