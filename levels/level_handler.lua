@@ -42,10 +42,12 @@ end
 function LevelHandler:update(dt)
     if self.current_level.type ~= "menu" then
         self.entity_handler:update(dt)
-        self.current_level:update(dt, self.entity_handler:get_player_position())
-        if self.player.player_entity.health <= 0 then
-            self.current_level_index = 1
-            self:load_new_level()
+        if self.player.pause ~= true then
+            self.current_level:update(dt, self.entity_handler:get_player_position())
+            if self.player.player_entity.health <= 0 then
+                self.current_level_index = 1
+                self:load_new_level()
+            end
         end
     else
         self.current_level:update(dt)
