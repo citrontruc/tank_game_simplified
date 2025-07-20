@@ -37,6 +37,7 @@ function LevelHandler:load_new_level()
     if self.current_level_index > #self.list_levels then
         self.current_level_index = 1
     end
+    self.entity_handler:reset()
     self.current_level = self.list_levels[self.current_level_index].initialize(self.player, self.tank_factory, self.entity_handler)
 end
 

@@ -13,8 +13,8 @@ local HUD_POSITION = {
 }
 
 local PAUSE_POSITION = {
-    x = love.graphics.getWidth() /2,
-    y = love.graphics.getHeight() /2,
+    x = love.graphics.getWidth() / 2,
+    y = love.graphics.getHeight() / 2,
 }
 
 function EntityHandler:new(cell_size_x, cell_size_y)
@@ -35,6 +35,15 @@ function EntityHandler:new(cell_size_x, cell_size_y)
 end
 
 -- Reset function
+function EntityHandler:reset()
+    self.player = {}
+    self.list_object = {
+        player = {},
+        enemy = {}
+    }
+    self.list_evaluate_collision = {}
+end
+
 function EntityHandler:reset_cells()
     self.list_evaluate_collision = {}
     for x = 0, self.num_cell_x + 1 do
@@ -121,16 +130,16 @@ function EntityHandler:evaluate_collision()
                             for _, circle_enemy in ipairs(object_2.circle_list) do
                                 local circle_1 = {
                                     x = object_1.position.x + circle_player.x * math.cos(object_1.angle.current) -
-                                    circle_player.y * math.sin(object_1.angle.current),
+                                        circle_player.y * math.sin(object_1.angle.current),
                                     y = object_1.position.y + circle_player.x * math.sin(object_1.angle.current) +
-                                    circle_player.y * math.cos(object_1.angle.current),
+                                        circle_player.y * math.cos(object_1.angle.current),
                                     r = circle_player.r
                                 }
                                 local circle_2 = {
                                     x = object_2.position.x + circle_enemy.x * math.cos(object_2.angle.current) -
-                                    circle_enemy.y * math.sin(object_2.angle.current),
+                                        circle_enemy.y * math.sin(object_2.angle.current),
                                     y = object_2.position.y + circle_enemy.x * math.sin(object_2.angle.current) +
-                                    circle_enemy.y * math.cos(object_2.angle.current),
+                                        circle_enemy.y * math.cos(object_2.angle.current),
                                     r = circle_enemy.r
                                 }
                                 if MathSupplement.check_intersection_cicles(circle_1, circle_2) then
