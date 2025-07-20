@@ -1,6 +1,7 @@
 -- Imports of our item
 
 local EntityHandler = require("entities.entity_handler")
+local Level = require("levels.level")
 local PlayerFactory = require("player.player_factory")
 local TankFactory = require("entities.tank.tank_factory")
 
@@ -50,12 +51,17 @@ local enemy_size = {
 local enemy_angle = 0
 local enemy_tank_type = "red"
 local enemy_missile_type = "chase"
+local MAX_TANK = 4
 
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)
 
 -- create out important objects
 local entity_handler = EntityHandler:new(cell_size_x, cell_size_y)
+local level = Level:new(
+    entity_handler,
+    MAX_TANK
+)
 local player_factory = PlayerFactory:new()
 local tank_factory = TankFactory:new(entity_handler)
 
@@ -76,7 +82,7 @@ function love.load()
         "player",
         player_missile_type
     )
-    tank_factory:new_tank(
+    local enemy_tank = tank_factory:new_tank(
         enemy_initial_health,
         enemy_position.x,
         enemy_position.y,
@@ -89,17 +95,20 @@ function love.load()
         "idle",
         enemy_missile_type
     )
+    level:set_remaining_tanks({enemy_tank})
     player:set_entity(player_tank)
     entity_handler:set_player(player)
 end
 
 function love.update(dt)
     entity_handler:update(dt)
+    level:update(dt, entity_handler:get_player_position())
 end
 
 function love.draw()
     -- love.graphics.print("Memory (KB): " .. collectgarbage("count"), 10, 10)
     entity_handler:draw()
+    level:draw_text()
 end
 
 -- Methods to change control type.

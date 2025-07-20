@@ -86,9 +86,6 @@ function TankFactory:new_tank(
     tank:set_graphics_handler(graphics_handler)
     tank:set_missile_factory(self.missile_factory)
     self:set_tank_state_specific_variables(tank)
-    if player == false then
-        self.entity_handler:assign(tank, player)
-    end
     return tank
 end
 

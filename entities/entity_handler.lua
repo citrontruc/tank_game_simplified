@@ -56,6 +56,10 @@ function EntityHandler:assign(entity, player)
     end
 end
 
+function EntityHandler:get_player_position()
+    return self.player.player_entity.position
+end
+
 -- Update functions to update all elements in our entity_hendler
 function EntityHandler:update(dt)
     if self.player.pause ~= true then
