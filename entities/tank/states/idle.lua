@@ -31,8 +31,8 @@ end
 function IdleState.update_direction()
     local value = {0, 1}
     local sign = {-1, 1}
-    local random_value = value[math.random(#value)]
-    local random_sign = sign[math.random(#sign)]
+    local random_value = value[love.math.random(#value)]
+    local random_sign = sign[love.math.random(#sign)]
     return random_value * random_sign, (1 - random_value) * random_sign
 end
 

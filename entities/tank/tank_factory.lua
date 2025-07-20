@@ -20,26 +20,6 @@ local TANK_TYPES = {
     }
 }
 
-local DEFAULT_TANK_STATE_VARIABLES = {
-    player = {
-        action_cooldown = .5
-    },
-    chase = {
-        distance_threshold = 500,
-        action_cooldown = 2
-    },
-    idle = {
-        distance_threshold = 400,
-        max_time = 1,
-        x = 0,
-        y = 0
-    },
-    wait = {
-        distance_threshold = 400,
-        max_time = .5
-    }
-}
-
 local TankFactory = {}
 TankFactory.__index = TankFactory
 
@@ -92,6 +72,25 @@ function TankFactory:new_tank(
 end
 
 function TankFactory:set_tank_state_specific_variables(tank, tank_specific_variables)
+    local DEFAULT_TANK_STATE_VARIABLES = {
+        player = {
+            action_cooldown = .5
+        },
+        chase = {
+            distance_threshold = 500,
+            action_cooldown = 2
+        },
+        idle = {
+            distance_threshold = 400,
+            max_time = 1,
+            x = 0,
+            y = 0
+        },
+        wait = {
+            distance_threshold = 400,
+            max_time = .5
+        }
+    }
     if tank_specific_variables == nil then
         tank_specific_variables = DEFAULT_TANK_STATE_VARIABLES
     end
