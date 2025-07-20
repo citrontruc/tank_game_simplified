@@ -12,14 +12,14 @@ local flags = {
 }
 
 -- Cell size for our screen grid
-local cell_size_x = 200
-local cell_size_y = 200
+local CELL_SIZE_X = 200
+local CELL_SIZE_Y = 200
 
 -- Change sizeof screen
 love.window.setMode(1200, 800, flags)
 
 -- create out important objects
-local entity_handler = EntityHandler:new(cell_size_x, cell_size_y)
+local entity_handler = EntityHandler:new(CELL_SIZE_X, CELL_SIZE_Y)
 local player_factory = PlayerFactory:new()
 local tank_factory = TankFactory:new(entity_handler)
 
